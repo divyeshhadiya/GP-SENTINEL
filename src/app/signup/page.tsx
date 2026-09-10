@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import PoliceLogo from "@/components/common/PoliceLogo";
-import { User, Mail, Lock, Eye, EyeOff, UserPlus, Check } from "lucide-react";
+import { User, Mail, Lock, Eye, EyeOff, UserPlus, Check, Shield } from "lucide-react";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -29,12 +29,12 @@ export default function SignupPage() {
 
     login({
       id: `USR-${Date.now().toString().slice(-4)}`,
-      name: fullName || "Registered Innovator",
-      badgeId: `GP-HACK-${Date.now().toString().slice(-4)}`,
+      name: fullName || "Registered Officer",
+      badgeId: `GP-OFF-${Date.now().toString().slice(-4)}`,
       rank: role,
-      department: "Gujarat Police Innovation Cohort 2026",
+      department: "Gujarat Police State Command",
       role: "SP_COMMAND",
-      email: email || "innovator@sentinel.gov.in"
+      email: email || "officer@sentinel.gov.in"
     });
     router.push("/");
   };
@@ -87,14 +87,12 @@ export default function SignupPage() {
             </div>
           </div>
 
-          {/* Bottom Enterprise Branding */}
-          <div className="mt-8 pt-5 border-t border-white/10 relative z-10">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/assets/ihub-logo.png"
-              alt="i-Hub (A Gujarat Government Enterprise)"
-              className="h-6 object-contain opacity-95"
-            />
+          {/* Bottom Official Government Accreditation */}
+          <div className="mt-8 pt-5 border-t border-white/10 relative z-10 flex items-center space-x-2 text-xs text-slate-300">
+            <Shield className="w-4 h-4 text-sky-400 shrink-0" />
+            <span className="text-[11px] text-slate-300 tracking-wide font-medium">
+              Home Department • Government of Gujarat
+            </span>
           </div>
         </div>
 

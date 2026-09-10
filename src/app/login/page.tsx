@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
@@ -13,14 +13,21 @@ import {
   LogIn,
   Check,
   ShieldCheck,
+  Shield,
+  Smartphone,
+  KeyRound,
   X,
   Loader2,
-  CheckCircle2
+  CheckCircle2,
+  RefreshCw
 } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
   const { user, login, isAuthenticated } = useAuth();
+
+  // Authentication method: "password" vs "otp"
+  const [credentialMethod, setCredentialMethod] = useState<"password" | "otp">("password");
 
   // Form states
   const [email, setEmail] = useState("dgp.police@gujarat.gov.in");
@@ -28,14 +35,55 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
 
+  // OTP states
+  const [otpCode, setOtpCode] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpTimer, setOtpTimer] = useState(0);
+  const [otpNotification, setOtpNotification] = useState<string | null>(null);
+
   // Interaction feedback states
   const [isLoading, setIsLoading] = useState(false);
   const [forgotModalOpen, setForgotModalOpen] = useState(false);
   const [forgotEmail, setForgotEmail] = useState("");
   const [forgotSubmitted, setForgotSubmitted] = useState(false);
 
+  // Countdown timer for OTP resend
+  useEffect(() => {
+    if (otpTimer <= 0) return;
+    const timer = setInterval(() => {
+      setOtpTimer((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [otpTimer]);
+
+  const handleSendOtp = () => {
+    if (!email) {
+      alert("Please enter your registered email address or mobile number.");
+      return;
+    }
+    setOtpSent(true);
+    setOtpTimer(30);
+    setOtpNotification("OTP sent successfully to authorized terminal!");
+  };
+
+  const handleQuickFillOtp = () => {
+    setOtpCode("9420");
+  };
+
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (credentialMethod === "otp") {
+      if (!otpSent) {
+        handleSendOtp();
+        return;
+      }
+      if (!otpCode) {
+        alert("Please enter the 4-digit or 6-digit OTP.");
+        return;
+      }
+    }
+
     setIsLoading(true);
 
     setTimeout(() => {
@@ -114,18 +162,16 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Bottom Enterprise Branding (Using Official i-Hub Logo Asset) */}
-          <div className="mt-8 pt-5 border-t border-white/10 relative z-10">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/assets/ihub-logo.png"
-              alt="i-Hub (A Gujarat Government Enterprise)"
-              className="h-7 object-contain opacity-95 hover:opacity-100 transition-opacity"
-            />
+          {/* Bottom Official Government Accreditation */}
+          <div className="mt-8 pt-5 border-t border-white/10 relative z-10 flex items-center space-x-2.5 text-xs text-slate-300">
+            <Shield className="w-4 h-4 text-sky-400 shrink-0" />
+            <span className="text-[11px] text-slate-300 tracking-wide font-medium">
+              Home Department • Government of Gujarat
+            </span>
           </div>
         </div>
 
-        {/* Right Column: Clean Login Form (Pixel-Matched to Reference Screenshot) */}
+        {/* Right Column: Clean Login Form */}
         <div className="md:col-span-7 bg-white dark:bg-slate-900 p-7 sm:p-9 flex flex-col justify-between">
           <div className="space-y-5">
             {/* Header Title */}
@@ -172,81 +218,171 @@ export default function LoginPage() {
               </div>
             )}
 
-            {/* Primary Login Form (Matching User Reference Image) */}
+            {/* Auth Method Switch: Password vs OTP */}
+            <div className="flex p-1 bg-slate-100 dark:bg-slate-800/90 rounded-xl border border-slate-200 dark:border-slate-700/80">
+              <button
+                type="button"
+                onClick={() => setCredentialMethod("password")}
+                className={`flex-1 py-2 rounded-lg text-xs font-semibold flex items-center justify-center space-x-2 transition-all cursor-pointer ${
+                  credentialMethod === "password"
+                    ? "bg-white dark:bg-slate-900 text-[#002347] dark:text-sky-400 shadow-sm border border-slate-200/80 dark:border-slate-700"
+                    : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                <Lock className="w-3.5 h-3.5" />
+                <span>Password Auth</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setCredentialMethod("otp")}
+                className={`flex-1 py-2 rounded-lg text-xs font-semibold flex items-center justify-center space-x-2 transition-all cursor-pointer ${
+                  credentialMethod === "otp"
+                    ? "bg-white dark:bg-slate-900 text-[#002347] dark:text-sky-400 shadow-sm border border-slate-200/80 dark:border-slate-700"
+                    : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                <Smartphone className="w-3.5 h-3.5" />
+                <span>OTP Fast Login</span>
+              </button>
+            </div>
+
+            {/* Login Form */}
             <form onSubmit={handleLoginSubmit} className="space-y-4 pt-1">
-              {/* Email Address Field */}
+              {/* Email Address / ID Field */}
               <div>
                 <label className="block text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                  Email Address
+                  {credentialMethod === "password" ? "Email Address" : "Email or Registered Mobile"}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                     <Mail className="w-4 h-4" />
                   </div>
                   <input
-                    type="email"
+                    type="text"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
+                    placeholder={credentialMethod === "password" ? "your@email.com" : "officer@gujarat.gov.in or 9876543210"}
                     className="w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 text-xs sm:text-sm transition-all shadow-sm"
                   />
                 </div>
               </div>
 
-              {/* Password Field */}
-              <div>
-                <label className="block text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                  Password
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                    <Lock className="w-4 h-4" />
+              {/* Password Auth Fields */}
+              {credentialMethod === "password" && (
+                <>
+                  <div>
+                    <label className="block text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                      Password
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                        <Lock className="w-4 h-4" />
+                      </div>
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter your password"
+                        className="w-full pl-10 pr-10 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 text-xs sm:text-sm transition-all shadow-sm font-mono"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                      >
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
                   </div>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
-                    className="w-full pl-10 pr-10 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 text-xs sm:text-sm transition-all shadow-sm font-mono"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
+
+                  {/* Remember Me & Forgot Password Row */}
+                  <div className="flex items-center justify-between text-xs pt-1">
+                    <label className="flex items-center space-x-2 text-slate-600 dark:text-slate-400 cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={rememberMe}
+                        onChange={(e) => setRememberMe(e.target.checked)}
+                        className="w-4 h-4 rounded border-slate-300 dark:border-slate-700 text-[#002347] focus:ring-blue-500 accent-[#002347]"
+                      />
+                      <span>Remember me</span>
+                    </label>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setForgotModalOpen(true);
+                        setForgotSubmitted(false);
+                        setForgotEmail(email);
+                      }}
+                      className="text-slate-600 dark:text-slate-400 hover:text-[#002347] dark:hover:text-blue-400 font-medium transition-colors cursor-pointer"
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {/* OTP Auth Fields */}
+              {credentialMethod === "otp" && (
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                      One-Time Password (OTP)
+                    </label>
+                    <div className="flex space-x-2">
+                      <div className="relative flex-1">
+                        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                          <KeyRound className="w-4 h-4" />
+                        </div>
+                        <input
+                          type="text"
+                          maxLength={6}
+                          value={otpCode}
+                          onChange={(e) => setOtpCode(e.target.value)}
+                          placeholder="Enter 4 or 6-digit OTP"
+                          className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono text-sm tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-600 shadow-sm"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleSendOtp}
+                        disabled={otpTimer > 0}
+                        className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg text-xs font-semibold shrink-0 cursor-pointer shadow transition-all flex items-center space-x-1.5"
+                      >
+                        {otpTimer > 0 ? (
+                          <>
+                            <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                            <span>Resend ({otpTimer}s)</span>
+                          </>
+                        ) : (
+                          <span>{otpSent ? "Resend OTP" : "Send OTP"}</span>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* OTP Notification / Auto-Fill Hint */}
+                  {otpNotification && (
+                    <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-lg text-xs flex items-center justify-between animate-fadeIn">
+                      <div className="flex items-center space-x-2 text-emerald-800 dark:text-emerald-300">
+                        <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+                        <span>{otpNotification}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleQuickFillOtp}
+                        className="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded font-mono font-bold text-[11px] transition-colors shrink-0 cursor-pointer shadow-sm ml-2"
+                      >
+                        Fill Demo OTP (9420)
+                      </button>
+                    </div>
+                  )}
                 </div>
-              </div>
+              )}
 
-              {/* Remember Me & Forgot Password Row */}
-              <div className="flex items-center justify-between text-xs pt-1">
-                <label className="flex items-center space-x-2 text-slate-600 dark:text-slate-400 cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 rounded border-slate-300 dark:border-slate-700 text-[#002347] focus:ring-blue-500 accent-[#002347]"
-                  />
-                  <span>Remember me</span>
-                </label>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setForgotModalOpen(true);
-                    setForgotSubmitted(false);
-                    setForgotEmail(email);
-                  }}
-                  className="text-slate-600 dark:text-slate-400 hover:text-[#002347] dark:hover:text-blue-400 font-medium transition-colors cursor-pointer"
-                >
-                  Forgot password?
-                </button>
-              </div>
-
-              {/* Submit Button (Matching reference [->] Login to Portal) */}
+              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={isLoading}
@@ -255,12 +391,23 @@ export default function LoginPage() {
                 {isLoading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin text-sky-400" />
-                    <span>Verifying Credentials...</span>
+                    <span>
+                      {credentialMethod === "password" ? "Verifying Credentials..." : "Validating OTP..."}
+                    </span>
                   </>
                 ) : (
                   <>
-                    <LogIn className="w-4 h-4 stroke-[2.5]" />
-                    <span>Login to Portal</span>
+                    {credentialMethod === "password" ? (
+                      <>
+                        <LogIn className="w-4 h-4 stroke-[2.5]" />
+                        <span>Login to Portal</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShieldCheck className="w-4 h-4 stroke-[2.5]" />
+                        <span>Verify OTP &amp; Enter Portal</span>
+                      </>
+                    )}
                   </>
                 )}
               </button>
@@ -341,3 +488,4 @@ export default function LoginPage() {
     </div>
   );
 }
+
