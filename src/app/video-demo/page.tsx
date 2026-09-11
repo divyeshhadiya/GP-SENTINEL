@@ -47,6 +47,62 @@ export default function VideoDemoPage() {
   const [sceneProgress, setSceneProgress] = useState(0); // 0 to 100
   const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState<1 | 1.5 | 2>(1);
+  const [isRecording, setIsRecording] = useState(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const recordedChunksRef = useRef<Blob[]>([]);
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        video: { displaySurface: "browser" },
+        audio: true
+      });
+      recordedChunksRef.current = [];
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: MediaRecorder.isTypeSupported("video/webm;codecs=vp9,opus")
+          ? "video/webm;codecs=vp9,opus"
+          : "video/webm"
+      });
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data && event.data.size > 0) {
+          recordedChunksRef.current.push(event.data);
+        }
+      };
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunksRef.current, { type: "video/webm" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.style.display = "none";
+        a.href = url;
+        a.download = "GP-SENTINEL_Official_Demonstration_Video.webm";
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        setIsRecording(false);
+      };
+      stream.getVideoTracks()[0].onended = () => {
+        if (mediaRecorder.state !== "inactive") {
+          mediaRecorder.stop();
+        }
+      };
+      mediaRecorderRef.current = mediaRecorder;
+      mediaRecorder.start();
+      setIsRecording(true);
+      setCurrentSceneIndex(0);
+      setSceneProgress(0);
+      setIsPlaying(true);
+    } catch (err) {
+      console.warn("Screen recording was canceled or denied by user.", err);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
+      mediaRecorderRef.current.stop();
+      mediaRecorderRef.current.stream.getTracks().forEach((track) => track.stop());
+      setIsRecording(false);
+    }
+  };
 
   const scenes: DemoScene[] = [
     // Scene 1: Platform Overview
@@ -565,10 +621,10 @@ export default function VideoDemoPage() {
           <div>
             <div className="flex items-center space-x-2">
               <span className="text-xs font-mono font-bold uppercase text-amber-400">
-                Official Hackathon Video Demonstration
+                Official Sentinel 2026 Video Demonstration
               </span>
-              <span className="px-2 py-0.5 rounded text-[10px] bg-red-600 font-bold uppercase animate-pulse">
-                REC ACTIVE
+              <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${isRecording ? "bg-red-600 text-white animate-pulse" : "bg-emerald-600 text-white"}`}>
+                {isRecording ? "● RECORDING TO FILE" : "TOUR READY"}
               </span>
             </div>
             <h2 className="text-sm font-bold text-white truncate">
@@ -578,22 +634,56 @@ export default function VideoDemoPage() {
         </div>
 
         {/* Action Downloads */}
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {/* 1-Click Screen Record & Download Button */}
+          {isRecording ? (
+            <button
+              onClick={stopRecording}
+              className="flex items-center space-x-1.5 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-xs transition-all shadow-md animate-pulse cursor-pointer"
+            >
+              <div className="w-2.5 h-2.5 bg-white rounded-xs"></div>
+              <span>Stop &amp; Save Video (.webm)</span>
+            </button>
+          ) : (
+            <button
+              onClick={startRecording}
+              className="flex items-center space-x-1.5 px-3 py-1.5 bg-red-600/90 hover:bg-red-600 text-white font-bold rounded-lg text-xs transition-all shadow-md cursor-pointer"
+              title="Record the guided tour directly to a downloadable video file"
+            >
+              <div className="w-2.5 h-2.5 rounded-full bg-white animate-ping"></div>
+              <span>Record &amp; Download Video</span>
+            </button>
+          )}
+
+          {/* Direct PPTX Download Button */}
+          <a
+            href="/GP-SENTINEL_Official_Pitch_Deck.pptx"
+            download="GP-SENTINEL_Official_Pitch_Deck.pptx"
+            className="flex items-center space-x-1.5 px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs transition-all shadow-md cursor-pointer"
+            title="Download the official 16-slide presentation file (.pptx)"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Download .PPTX</span>
+          </a>
+
+          {/* Direct JSON Report Download Button */}
           <a
             href="/DETECTION_OUTPUT_REPORT.json"
             download="DETECTION_OUTPUT_REPORT.json"
-            className="flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition-all shadow-md"
+            className="flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition-all shadow-md cursor-pointer"
+            title="Download the mandated official vehicle detection output report (.json)"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Output Report (.JSON)</span>
           </a>
 
+          {/* Link to Interactive Slide Deck */}
           <Link
             href="/presentation"
             className="flex items-center space-x-1.5 px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-lg text-xs transition-all shadow-md"
           >
             <FileText className="w-3.5 h-3.5" />
-            <span>Pitch Deck (PPTX)</span>
+            <span>Open Slides</span>
           </Link>
         </div>
       </div>
@@ -729,8 +819,8 @@ export default function VideoDemoPage() {
             <Video className="w-4 h-4 text-sky-600 dark:text-sky-400" />
             <span>Official Video Submission Instructions (According to sentinel.gujarat.gov.in)</span>
           </div>
-          <span className="px-2.5 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-600 dark:text-amber-400 font-mono">
-            HACKATHON DELIVERABLE
+          <span className="px-2.5 py-0.5 rounded text-[11px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">
+            OFFICIAL EVALUATION CRITERIA
           </span>
         </div>
 
