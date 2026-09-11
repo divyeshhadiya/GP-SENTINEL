@@ -33,3 +33,6 @@ server.log
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.tmp_edge
+.tmp_chrome
