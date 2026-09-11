@@ -16,7 +16,9 @@ import {
   Terminal,
   LogIn,
   LogOut,
-  ShieldCheck
+  ShieldCheck,
+  Presentation,
+  Film
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
@@ -33,6 +35,20 @@ const navItems: NavItem[] = [
     name: "Command Dashboard",
     href: "/",
     icon: LayoutDashboard
+  },
+  {
+    name: "Official Pitch Deck",
+    href: "/presentation",
+    icon: Presentation,
+    tag: "PPT / PDF",
+    modelBadge: "Deck"
+  },
+  {
+    name: "Video Demonstration",
+    href: "/video-demo",
+    icon: Film,
+    tag: "Live Demo",
+    modelBadge: "Video"
   },
   {
     name: "GIS Camera Registry",

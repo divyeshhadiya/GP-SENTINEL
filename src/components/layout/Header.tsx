@@ -13,7 +13,9 @@ import {
   Moon,
   User,
   LogOut,
-  LogIn
+  LogIn,
+  Presentation,
+  Video
 } from "lucide-react";
 import PoliceLogo from "@/components/common/PoliceLogo";
 import { alertAudio } from "@/utils/audio";
@@ -113,6 +115,24 @@ export default function Header() {
 
         {/* Live Counters & Tactical Actions */}
         <div className="flex items-center space-x-2 sm:space-x-3">
+          <Link
+            href="/presentation"
+            className="hidden xl:flex items-center space-x-1.5 px-2.5 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 rounded-lg text-amber-700 dark:text-amber-400 text-xs font-medium transition-all"
+            title="Official Pitch Deck & Architecture Presentation"
+          >
+            <Presentation className="w-3.5 h-3.5 text-amber-500" />
+            <span>Pitch Deck</span>
+          </Link>
+
+          <Link
+            href="/video-demo"
+            className="hidden lg:flex items-center space-x-1.5 px-2.5 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-lg text-emerald-700 dark:text-emerald-400 text-xs font-medium transition-all"
+            title="Live Operational Video Demonstration"
+          >
+            <Video className="w-3.5 h-3.5 text-emerald-500" />
+            <span>Video Demo</span>
+          </Link>
+
           <Link
             href="/vehicle-tracking"
             className="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 bg-blue-50 dark:bg-blue-600/20 hover:bg-blue-100 dark:hover:bg-blue-600/30 border border-blue-300 dark:border-blue-500/40 rounded-lg text-blue-700 dark:text-blue-300 text-xs font-medium transition-all"
