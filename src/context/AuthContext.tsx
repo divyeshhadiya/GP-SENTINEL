@@ -61,21 +61,22 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<UserProfile | null>(defaultAdminUser);
-  const [isAuthLoading, setIsAuthLoading] = useState(false);
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   useEffect(() => {
     try {
       const saved = localStorage.getItem("sentinel_user");
-      if (saved) {
+      const hasCookie = typeof document !== "undefined" && document.cookie.includes("sentinel_auth=1");
+      if (saved && hasCookie) {
         setUser(JSON.parse(saved));
       } else {
-        setUser(defaultAdminUser);
-        localStorage.setItem("sentinel_user", JSON.stringify(defaultAdminUser));
+        setUser(null);
+        localStorage.removeItem("sentinel_user");
       }
     } catch (e) {
       console.warn("Failed to parse saved session", e);
-      setUser(defaultAdminUser);
+      setUser(null);
     } finally {
       setIsAuthLoading(false);
     }
@@ -84,11 +85,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = (profile: UserProfile) => {
     setUser(profile);
     localStorage.setItem("sentinel_user", JSON.stringify(profile));
+    if (typeof document !== "undefined") {
+      document.cookie = "sentinel_auth=1; path=/; max-age=86400; SameSite=Lax";
+    }
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem("sentinel_user");
+    if (typeof document !== "undefined") {
+      document.cookie = "sentinel_auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; max-age=0";
+    }
   };
 
   return (
