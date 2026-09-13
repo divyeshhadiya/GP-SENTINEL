@@ -99,9 +99,14 @@ SentinelProject/
 │   │       ├── cameras/route.ts     # Camera catalog query & search
 │   │       ├── vehicle/track/route.ts # Target traversal route coordinates
 │   │       ├── watchlists/route.ts  # Law enforcement database query
-│   │       ├── alerts/route.ts      # Active alert streaming
+│   │       ├── alerts/route.ts      # Active alert streaming & dispatch
 │   │       ├── ingest/route.ts      # Telemetry ingestion endpoint
-│   │       └── gap-analysis/route.ts# Department coverage calculation
+│   │       ├── gap-analysis/route.ts# Department coverage calculation
+│   │       └── auth/login/route.ts  # Police credentials authentication
+│   ├── server/                      # Enterprise Backend Service & Repository Layer
+│   │   ├── services/                # Business & Domain Logic (cameraService, alertService, vehicleService, etc.)
+│   │   ├── repositories/            # Data Access & Entity Repositories (PostGIS queries, memory cache)
+│   │   └── utils/                   # Standardized API response envelopes and typed error handling
 │   ├── components/                  # Modular React component library
 │   │   ├── layout/                  # Header, Sidebar, and navigation components
 │   │   │   ├── Header.tsx           # Global header with theme toggle, audio, officer menu
