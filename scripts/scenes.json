@@ -1,0 +1,470 @@
+[
+  {
+    "title": "1. Platform Identity & Executive Overview",
+    "sub": "Gujarat Police Innovation Challenge 2026 \u2022 SCRB Gandhinagar",
+    "badge": "STATEWIDE COMMAND GRID",
+    "badge_col": [
+      56,
+      189,
+      248
+    ],
+    "narrative": "GP-SENTINEL unifies 80,000+ CCTVs from 26 disparate Gujarat Government departments into an integrated video intelligence grid with sub-second AI tracking and zero WAN congestion.",
+    "spec_title": "Enterprise Scale & Leadership",
+    "specs": [
+      [
+        "Platform Lead",
+        "Divyesh Hadiya (Lead Solution Architect)"
+      ],
+      [
+        "Command Authority",
+        "State Crime Record Bureau (SCRB), Gandhinagar"
+      ],
+      [
+        "Target Scale",
+        "80,000+ CCTV Nodes across 33 Gujarat Districts"
+      ],
+      [
+        "Federation Scope",
+        "26 Departments (VISWAS Police, G-SWAN, R&B, GSRTC)"
+      ],
+      [
+        "Core Breakthrough",
+        "Model 5 Hybrid Edge Intelligence with Distributed Telemetry"
+      ],
+      [
+        "Security Standard",
+        "SHA-256 Chained Hashes & Role-Based Access Control"
+      ]
+    ],
+    "draw_type": "overview"
+  },
+  {
+    "title": "2. Cold-Start Enforced Login & Role-Based Access Control (RBAC)",
+    "sub": "Zero Unauthenticated Access \u2022 Official Officer Credentials Pre-Filled",
+    "badge": "RBAC LEVEL 4 ENCRYPTED",
+    "badge_col": [
+      217,
+      119,
+      6
+    ],
+    "narrative": "System cold-start automatically protects all command dashboards by redirecting visitors to the official Login Portal. Pre-fills verified DGP credentials and provides 1-click role switching.",
+    "spec_title": "Access Control Architecture",
+    "specs": [
+      [
+        "Route Guard",
+        "Strict unauthenticated redirect from / to /login"
+      ],
+      [
+        "Default Officer",
+        "Dr. Vikas Sahay, IPS (Director General of Police)"
+      ],
+      [
+        "Command Officer",
+        "Shri Ajay Choudhary, IPS (Superintendent of Police)"
+      ],
+      [
+        "Field Officer",
+        "Inspector R.K. Vaghela (Surat Traffic & ANPR Netram)"
+      ],
+      [
+        "Autofill Support",
+        "Standard HTML5 autoComplete attributes for ID & Password"
+      ],
+      [
+        "Session Auditing",
+        "Immutable login/logout audit receipts with timestamping"
+      ]
+    ],
+    "draw_type": "login"
+  },
+  {
+    "title": "3. Architecture Model 5 Justification: Hybrid Edge Ecosystem",
+    "sub": "Eliminating the 160 Gbps Statewide WAN Overload via Edge Metadata Parsing",
+    "badge": "97% WAN BANDWIDTH SAVED",
+    "badge_col": [
+      16,
+      185,
+      129
+    ],
+    "narrative": "Unlike Pure Centralized streaming which chokes Gujarat WAN with 160 Gbps of raw video, Model 5 executes AI inference at the Edge and transmits only 2 KB JSON telemetry records to Gandhinagar.",
+    "spec_title": "Bandwidth & Compute Matrix",
+    "specs": [
+      [
+        "Raw WAN Demand",
+        "160 Gbps (Unfeasible under traditional Central VMS)"
+      ],
+      [
+        "GP-SENTINEL Load",
+        "4.8 Gbps Peak (97% statewide bandwidth reduction)"
+      ],
+      [
+        "Edge Processing",
+        "YOLOv8 & Lightweight ANPR OCR at District Netrams"
+      ],
+      [
+        "Telemetry Protocol",
+        "Lightweight Kafka / RabbitMQ JSON Event Bus (2 KB/event)"
+      ],
+      [
+        "Video Retrieval",
+        "On-demand tokenized unicast streaming only upon target hit"
+      ],
+      [
+        "Storage Sizing",
+        "Tier 1 NVMe Hot (7d) -> Tier 2 Hybrid SAN (30d) -> Cold Glaciers"
+      ]
+    ],
+    "draw_type": "architecture"
+  },
+  {
+    "title": "4. Scenario 1: Statewide Multi-Department GIS Camera Registry (Model 1)",
+    "sub": "Unified Federated Registry of 50 Mapped GIS Cameras Across 26 Departments",
+    "badge": "50 GIS NODES FEDERATED",
+    "badge_col": [
+      56,
+      189,
+      248
+    ],
+    "narrative": "Federates surveillance infrastructure across Police, Roads & Buildings Toll Plazas, Smart Cities G-SWAN, and GSRTC. Provides real-time camera ping, RTSP health, and AMC warranty tracking.",
+    "spec_title": "Federated Inventory Status",
+    "specs": [
+      [
+        "Police Netram",
+        "Gandhinagar (CH-3, Sector 18), Ahmedabad (SG Hwy), Surat"
+      ],
+      [
+        "R&B Highway Tolls",
+        "Sanand GIDC, NE-1 Expressway Toll, Narmada Bridge NH-48"
+      ],
+      [
+        "Smart Cities (G-SWAN)",
+        "Infocity Gate 2, GIFT City Central Boulevard, Bodakdev"
+      ],
+      [
+        "Resolution Standards",
+        "4K UHD (3840x2160) & 1080p FHD @ 30 FPS"
+      ],
+      [
+        "Compression Codecs",
+        "Next-gen H.265 High Efficiency + H.264 Legacy"
+      ],
+      [
+        "Network Ping",
+        "Ultra-low latency between 9ms and 22ms statewide"
+      ]
+    ],
+    "draw_type": "registry"
+  },
+  {
+    "title": "5. Scenario 2: Low-Bandwidth Adaptive Video Wall (Model 2)",
+    "sub": "Dynamic Sub-Stream Thumbnail Matrix with On-Demand High-Definition Elevation",
+    "badge": "94% WALL EGRESS REDUCED",
+    "badge_col": [
+      16,
+      185,
+      129
+    ],
+    "narrative": "The video wall defaults to ultra-low-bandwidth sub-streams (320x180 @ 15fps), keeping wall consumption below 5.6 Mbps. Clicking any feed or AI trigger instantly elevates it to 4K.",
+    "spec_title": "Video Wall Stream Mechanics",
+    "specs": [
+      [
+        "Sub-Stream Specs",
+        "320x180 Thumbnail Matrix @ 15 FPS (350 Kbps / feed)"
+      ],
+      [
+        "Main-Stream Specs",
+        "1080p / 4K UHD @ 30 FPS (4.5 Mbps / feed on-demand)"
+      ],
+      [
+        "Grid Layouts",
+        "Adaptive 1x1 Focus, 2x2 District, 3x3 Corridor, 4x4 Statewide"
+      ],
+      [
+        "Dynamic Elevation",
+        "Triggered automatically when Watchlist match is detected"
+      ],
+      [
+        "Video Proxy Node",
+        "WebRTC & HLS low-latency transcoding engine"
+      ],
+      [
+        "Operator Console",
+        "Multi-monitor synchronization with zero browser memory leak"
+      ]
+    ],
+    "draw_type": "videowall"
+  },
+  {
+    "title": "6. Scenario 3: Heterogeneous VMS Federation Proxy Middleware (Model 3)",
+    "sub": "Universal Protocol Normalization Across 6 Disparate Vendor VMS Platforms",
+    "badge": "ZERO VENDOR LOCK-IN",
+    "badge_col": [
+      56,
+      189,
+      248
+    ],
+    "narrative": "Acts as universal middleware abstracting proprietary APIs from Hikvision, Dahua, Matrix, Hanwha, CP Plus, and Milestone into a unified ONVIF & REST streaming interface.",
+    "spec_title": "Federated Vendor Stack",
+    "specs": [
+      [
+        "Hikvision VMS",
+        "iVMS-4200 SDK & ISAPI Adapter (RTSP Digest)"
+      ],
+      [
+        "Dahua WizMind",
+        "DSS Pro API Adapter & Smart Search Metadata Bridge"
+      ],
+      [
+        "Matrix SATATYA",
+        "G-SWAN NetOps Smart Streaming Bridge"
+      ],
+      [
+        "Hanwha Wisenet",
+        "Wave Video Management Gateway (Profile S/T/G)"
+      ],
+      [
+        "CP PLUS UniMax",
+        "R&B Highway Toll Plaza NVR Proxy Gateway"
+      ],
+      [
+        "Milestone Systems",
+        "XProtect Corporate Federation Server Bridge"
+      ]
+    ],
+    "draw_type": "federation"
+  },
+  {
+    "title": "7. Scenario 4: AI ANPR & Cross-District Vehicle Traversal (Model 4)",
+    "sub": "Chronological 5-Hop Traversal Tracking of Target Vehicle GJ-01-AB-1234",
+    "badge": "99.4% OCR ACCURACY",
+    "badge_col": [
+      217,
+      119,
+      6
+    ],
+    "narrative": "Tracks suspect white Mahindra Scorpio GJ-01-AB-1234 over 260 km from Ahmedabad to Surat. Accurately correlates camera hops, timestamps, speeds, and heading vectors in sub-seconds.",
+    "spec_title": "5-Hop Corridor Sightings",
+    "specs": [
+      [
+        "Hop 1 \u2022 08:14 AM",
+        "CAM-AMD-001: SG Highway Iscon Cross Road (64 km/h, 99.1%)"
+      ],
+      [
+        "Hop 2 \u2022 08:42 AM",
+        "CAM-AMD-002: Sanand GIDC Highway Toll Plaza (78 km/h, 99.4%)"
+      ],
+      [
+        "Hop 3 \u2022 09:32 AM",
+        "CAM-VAD-001: Vadodara NE-1 Expressway Toll (88 km/h, 98.9%)"
+      ],
+      [
+        "Hop 4 \u2022 10:48 AM",
+        "CAM-BHR-001: Narmada Cable Bridge NH-48 (72 km/h, 99.2%)"
+      ],
+      [
+        "Hop 5 \u2022 11:45 AM",
+        "CAM-SRT-001: Surat Ring Road Sahara Darwaja (56 km/h, 99.3%)"
+      ],
+      [
+        "Forensic Hashes",
+        "Chained SHA-256 hashes generated at each camera hop"
+      ]
+    ],
+    "draw_type": "vehicle"
+  },
+  {
+    "title": "8. Scenario 5: Real-Time Watchlist Matching & Automated PCR Dispatch",
+    "sub": "Integrated VAHAN Stolen Registry & eGujCop Felony Warrants with Live Intercept",
+    "badge": "CRITICAL ALERT DISPATCHED",
+    "badge_col": [
+      239,
+      68,
+      68
+    ],
+    "narrative": "Matching target against VAHAN identifies active stolen vehicle warrant (FIR-1120/2026/NAV). System instantly dispatches nearest patrol unit PCR-SRT-12 with 3-minute ETA.",
+    "spec_title": "Incident Response Telemetry",
+    "specs": [
+      [
+        "Watchlist Record",
+        "WL-VAHAN-001 \u2022 Category: Stolen Vehicle (White Scorpio)"
+      ],
+      [
+        "Police Station",
+        "Navrangpura Police Station, Ahmedabad (FIR-1120/2026/NAV)"
+      ],
+      [
+        "Incident Severity",
+        "CRITICAL PRIORITY \u2022 Active Inter-District Intercept"
+      ],
+      [
+        "Dispatched Patrol",
+        "PCR-SRT-12 (Surat City Patrol 12, Sub-Inspector R.K. Dave)"
+      ],
+      [
+        "Estimated Arrival",
+        "3 Minutes to Sahara Darwaja Ring Road Junction"
+      ],
+      [
+        "Surat Netram Link",
+        "Traffic signals switched to green corridor for intercept PCR"
+      ]
+    ],
+    "draw_type": "alert"
+  },
+  {
+    "title": "9. Scenario 6: Section 65B Certified Forensic Evidentiary Dossier",
+    "sub": "Courtroom-Admissible Evidence Export under Indian Evidence Act & BSA 2023",
+    "badge": "SECTION 65B CERTIFIED",
+    "badge_col": [
+      16,
+      185,
+      129
+    ],
+    "narrative": "Generates legally authenticated forensic dossiers with cryptographic SHA-256 digital seals, officer badge metadata, and full chain-of-custody. One-click PDF download to officer downloads folder.",
+    "spec_title": "Legal Compliance Specifications",
+    "specs": [
+      [
+        "Statutory Mandate",
+        "Section 65B Indian Evidence Act & BSA Section 63/65"
+      ],
+      [
+        "Chain of Custody",
+        "Camera Sensor ID, RTSP Frame Timestamp, NVR Forensics"
+      ],
+      [
+        "Hash Verification",
+        "e3b0c442... SHA-256 cryptographic seal on raw plate crops"
+      ],
+      [
+        "Certifying Authority",
+        "Dr. Vikas Sahay, IPS \u2022 DGP & Director SCRB Gandhinagar"
+      ],
+      [
+        "Export Modality",
+        "Automated PDF export directly to C:\\Download path"
+      ],
+      [
+        "Tamper Protection",
+        "Watermarked barcode & verifiable QR verification key"
+      ]
+    ],
+    "draw_type": "dossier"
+  },
+  {
+    "title": "10. Scenario 7: Statewide Surveillance Gap Analysis & AI Optimization",
+    "sub": "AI Spatial Clustering Algorithm Identifying Unmonitored Highway Corridors",
+    "badge": "AI BLIND SPOT DETECTION",
+    "badge_col": [
+      56,
+      189,
+      248
+    ],
+    "narrative": "Spatial algorithms analyze 33 districts and highlight unmonitored road segments. Recommends GPS coordinates and hardware specs for optimal future camera deployment.",
+    "spec_title": "Coverage Gap Telemetry",
+    "specs": [
+      [
+        "Monitored Coverage",
+        "82.4% of National & State Expressways currently indexed"
+      ],
+      [
+        "Identified Gaps",
+        "14 critical blind spots flagged across Saurashtra & Border Zones"
+      ],
+      [
+        "Top Priority Gap",
+        "NH-56 Chhota Udepur Border Crossing (Score: 94/100)"
+      ],
+      [
+        "Recommended Node",
+        "Dual ANPR + PTZ Dome with Solar & 4G Failover"
+      ],
+      [
+        "ROI Optimization",
+        "Reduces duplicate camera purchases across R&B and Police"
+      ],
+      [
+        "Decision Support",
+        "Exportable GIS priority heatmaps for Home Dept funding"
+      ]
+    ],
+    "draw_type": "gap"
+  },
+  {
+    "title": "11. Scenario 8: High-Performance Python FastAPI Backend & Swagger Docs",
+    "sub": "Asynchronous Python 3.12 Architecture with PostgreSQL & SQLite Dual-Engine",
+    "badge": "SWAGGER UI ACTIVE :8000",
+    "badge_col": [
+      16,
+      185,
+      129
+    ],
+    "narrative": "Powered by FastAPI on port 8000 with SQLAlchemy 2.0 async ORM and dual-engine persistence. Seamlessly proxies via Next.js port 3000 with interactive OpenAPI documentation.",
+    "spec_title": "Backend Tech Specifications",
+    "specs": [
+      [
+        "Backend Framework",
+        "Python 3.12 + FastAPI with sub-50ms query latency"
+      ],
+      [
+        "Async Database",
+        "SQLAlchemy 2.0 Async + PostgreSQL 16 (asyncpg engine)"
+      ],
+      [
+        "Zero-Config Mode",
+        "Instant SQLite fallback (sqlite+aiosqlite) with auto-seed"
+      ],
+      [
+        "Interactive API Docs",
+        "Live Swagger console at http://localhost:8000/docs"
+      ],
+      [
+        "Reverse Proxy",
+        "Next.js rewrites /api/v1/* directly to backend FastAPI"
+      ],
+      [
+        "Data Seeding",
+        "50 GIS Cameras, Watchlists, Sightings & Officer Accounts"
+      ]
+    ],
+    "draw_type": "backend"
+  },
+  {
+    "title": "12. Scenario 9: 80,000 Camera Scalability, ROI & 24-Month Roadmap",
+    "sub": "Comprehensive Financial Sizing & Phased Statewide Deployment Strategy",
+    "badge": "SUBMISSION READY 2026",
+    "badge_col": [
+      217,
+      119,
+      6
+    ],
+    "narrative": "GP-SENTINEL delivers a 24-month phased rollout achieving 97% bandwidth savings and \u20b942 Cr Capex reduction. 100% operational prototype ready for Gujarat Police jury evaluation.",
+    "spec_title": "Roadmap & Evaluation Readiness",
+    "specs": [
+      [
+        "Phase 1 (M1-M6)",
+        "Gandhinagar & Ahmedabad Pilot (12,000 cameras federated)"
+      ],
+      [
+        "Phase 2 (M7-M14)",
+        "Vadodara, Surat & Golden Corridor NH-48 (35,000 cameras)"
+      ],
+      [
+        "Phase 3 (M15-M24)",
+        "Statewide 33 Districts & 26 Departments (80,000+ cameras)"
+      ],
+      [
+        "Financial ROI",
+        "\u20b942 Cr saved by federating existing departmental cameras"
+      ],
+      [
+        "Bandwidth ROI",
+        "160 Gbps raw demand reduced to 4.8 Gbps distributed WAN"
+      ],
+      [
+        "Evaluation Status",
+        "All 27 Next.js routes, FastAPI backend, and PPT/Video ready"
+      ]
+    ],
+    "draw_type": "roadmap"
+  }
+]

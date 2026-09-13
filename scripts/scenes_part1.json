@@ -1,0 +1,236 @@
+[
+  {
+    "title": "1. Platform Identity & Executive Overview",
+    "sub": "Gujarat Police Innovation Challenge 2026 \u2022 SCRB Gandhinagar",
+    "badge": "STATEWIDE COMMAND GRID",
+    "badge_col": [
+      56,
+      189,
+      248
+    ],
+    "narrative": "GP-SENTINEL unifies 80,000+ CCTVs from 26 disparate Gujarat Government departments into an integrated video intelligence grid with sub-second AI tracking and zero WAN congestion.",
+    "spec_title": "Enterprise Scale & Leadership",
+    "specs": [
+      [
+        "Platform Lead",
+        "Divyesh Hadiya (Lead Solution Architect)"
+      ],
+      [
+        "Command Authority",
+        "State Crime Record Bureau (SCRB), Gandhinagar"
+      ],
+      [
+        "Target Scale",
+        "80,000+ CCTV Nodes across 33 Gujarat Districts"
+      ],
+      [
+        "Federation Scope",
+        "26 Departments (VISWAS Police, G-SWAN, R&B, GSRTC)"
+      ],
+      [
+        "Core Breakthrough",
+        "Model 5 Hybrid Edge Intelligence with Distributed Telemetry"
+      ],
+      [
+        "Security Standard",
+        "SHA-256 Chained Hashes & Role-Based Access Control"
+      ]
+    ],
+    "draw_type": "overview"
+  },
+  {
+    "title": "2. Cold-Start Enforced Login & Role-Based Access Control (RBAC)",
+    "sub": "Zero Unauthenticated Access \u2022 Official Officer Credentials Pre-Filled",
+    "badge": "RBAC LEVEL 4 ENCRYPTED",
+    "badge_col": [
+      217,
+      119,
+      6
+    ],
+    "narrative": "System cold-start automatically protects all command dashboards by redirecting visitors to the official Login Portal. Pre-fills verified DGP credentials and provides 1-click role switching.",
+    "spec_title": "Access Control Architecture",
+    "specs": [
+      [
+        "Route Guard",
+        "Strict unauthenticated redirect from / to /login"
+      ],
+      [
+        "Default Officer",
+        "Dr. Vikas Sahay, IPS (Director General of Police)"
+      ],
+      [
+        "Command Officer",
+        "Shri Ajay Choudhary, IPS (Superintendent of Police)"
+      ],
+      [
+        "Field Officer",
+        "Inspector R.K. Vaghela (Surat Traffic & ANPR Netram)"
+      ],
+      [
+        "Autofill Support",
+        "Standard HTML5 autoComplete attributes for ID & Password"
+      ],
+      [
+        "Session Auditing",
+        "Immutable login/logout audit receipts with timestamping"
+      ]
+    ],
+    "draw_type": "login"
+  },
+  {
+    "title": "3. Architecture Model 5 Justification: Hybrid Edge Ecosystem",
+    "sub": "Eliminating the 160 Gbps Statewide WAN Overload via Edge Metadata Parsing",
+    "badge": "97% WAN BANDWIDTH SAVED",
+    "badge_col": [
+      16,
+      185,
+      129
+    ],
+    "narrative": "Unlike Pure Centralized streaming which chokes Gujarat WAN with 160 Gbps of raw video, Model 5 executes AI inference at the Edge and transmits only 2 KB JSON telemetry records to Gandhinagar.",
+    "spec_title": "Bandwidth & Compute Matrix",
+    "specs": [
+      [
+        "Raw WAN Demand",
+        "160 Gbps (Unfeasible under traditional Central VMS)"
+      ],
+      [
+        "GP-SENTINEL Load",
+        "4.8 Gbps Peak (97% statewide bandwidth reduction)"
+      ],
+      [
+        "Edge Processing",
+        "YOLOv8 & Lightweight ANPR OCR at District Netrams"
+      ],
+      [
+        "Telemetry Protocol",
+        "Lightweight Kafka / RabbitMQ JSON Event Bus (2 KB/event)"
+      ],
+      [
+        "Video Retrieval",
+        "On-demand tokenized unicast streaming only upon target hit"
+      ],
+      [
+        "Storage Sizing",
+        "Tier 1 NVMe Hot (7d) -> Tier 2 Hybrid SAN (30d) -> Cold Glaciers"
+      ]
+    ],
+    "draw_type": "architecture"
+  },
+  {
+    "title": "4. Scenario 1: Statewide Multi-Department GIS Camera Registry (Model 1)",
+    "sub": "Unified Federated Registry of 50 Mapped GIS Cameras Across 26 Departments",
+    "badge": "50 GIS NODES FEDERATED",
+    "badge_col": [
+      56,
+      189,
+      248
+    ],
+    "narrative": "Federates surveillance infrastructure across Police, Roads & Buildings Toll Plazas, Smart Cities G-SWAN, and GSRTC. Provides real-time camera ping, RTSP health, and AMC warranty tracking.",
+    "spec_title": "Federated Inventory Status",
+    "specs": [
+      [
+        "Police Netram",
+        "Gandhinagar (CH-3, Sector 18), Ahmedabad (SG Hwy), Surat"
+      ],
+      [
+        "R&B Highway Tolls",
+        "Sanand GIDC, NE-1 Expressway Toll, Narmada Bridge NH-48"
+      ],
+      [
+        "Smart Cities (G-SWAN)",
+        "Infocity Gate 2, GIFT City Central Boulevard, Bodakdev"
+      ],
+      [
+        "Resolution Standards",
+        "4K UHD (3840x2160) & 1080p FHD @ 30 FPS"
+      ],
+      [
+        "Compression Codecs",
+        "Next-gen H.265 High Efficiency + H.264 Legacy"
+      ],
+      [
+        "Network Ping",
+        "Ultra-low latency between 9ms and 22ms statewide"
+      ]
+    ],
+    "draw_type": "registry"
+  },
+  {
+    "title": "5. Scenario 2: Low-Bandwidth Adaptive Video Wall (Model 2)",
+    "sub": "Dynamic Sub-Stream Thumbnail Matrix with On-Demand High-Definition Elevation",
+    "badge": "94% WALL EGRESS REDUCED",
+    "badge_col": [
+      16,
+      185,
+      129
+    ],
+    "narrative": "The video wall defaults to ultra-low-bandwidth sub-streams (320x180 @ 15fps), keeping wall consumption below 5.6 Mbps. Clicking any feed or AI trigger instantly elevates it to 4K.",
+    "spec_title": "Video Wall Stream Mechanics",
+    "specs": [
+      [
+        "Sub-Stream Specs",
+        "320x180 Thumbnail Matrix @ 15 FPS (350 Kbps / feed)"
+      ],
+      [
+        "Main-Stream Specs",
+        "1080p / 4K UHD @ 30 FPS (4.5 Mbps / feed on-demand)"
+      ],
+      [
+        "Grid Layouts",
+        "Adaptive 1x1 Focus, 2x2 District, 3x3 Corridor, 4x4 Statewide"
+      ],
+      [
+        "Dynamic Elevation",
+        "Triggered automatically when Watchlist match is detected"
+      ],
+      [
+        "Video Proxy Node",
+        "WebRTC & HLS low-latency transcoding engine"
+      ],
+      [
+        "Operator Console",
+        "Multi-monitor synchronization with zero browser memory leak"
+      ]
+    ],
+    "draw_type": "videowall"
+  },
+  {
+    "title": "6. Scenario 3: Heterogeneous VMS Federation Proxy Middleware (Model 3)",
+    "sub": "Universal Protocol Normalization Across 6 Disparate Vendor VMS Platforms",
+    "badge": "ZERO VENDOR LOCK-IN",
+    "badge_col": [
+      56,
+      189,
+      248
+    ],
+    "narrative": "Acts as universal middleware abstracting proprietary APIs from Hikvision, Dahua, Matrix, Hanwha, CP Plus, and Milestone into a unified ONVIF & REST streaming interface.",
+    "spec_title": "Federated Vendor Stack",
+    "specs": [
+      [
+        "Hikvision VMS",
+        "iVMS-4200 SDK & ISAPI Adapter (RTSP Digest)"
+      ],
+      [
+        "Dahua WizMind",
+        "DSS Pro API Adapter & Smart Search Metadata Bridge"
+      ],
+      [
+        "Matrix SATATYA",
+        "G-SWAN NetOps Smart Streaming Bridge"
+      ],
+      [
+        "Hanwha Wisenet",
+        "Wave Video Management Gateway (Profile S/T/G)"
+      ],
+      [
+        "CP PLUS UniMax",
+        "R&B Highway Toll Plaza NVR Proxy Gateway"
+      ],
+      [
+        "Milestone Systems",
+        "XProtect Corporate Federation Server Bridge"
+      ]
+    ],
+    "draw_type": "federation"
+  }
+]

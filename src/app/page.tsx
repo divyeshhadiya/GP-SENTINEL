@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 import { initialCameras } from "@/data/cameras";
 import { initialWatchlist } from "@/data/watchlists";
 import GujaratGisMap from "@/components/gis/GujaratGisMap";
@@ -18,12 +20,40 @@ import {
   ArrowRight,
   Database,
   ExternalLink,
-  Zap
+  Zap,
+  Loader2
 } from "lucide-react";
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const { isAuthenticated, isAuthLoading } = useAuth();
   const [cameras, setCameras] = useState(initialCameras);
   const [selectedCamera, setSelectedCamera] = useState(initialCameras[0]);
+
+  useEffect(() => {
+    if (!isAuthLoading && !isAuthenticated) {
+      router.replace("/login");
+    }
+  }, [isAuthLoading, isAuthenticated, router]);
+
+  if (isAuthLoading || !isAuthenticated) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center space-y-4">
+        <div className="w-14 h-14 rounded-2xl bg-blue-600/10 border border-blue-500/30 flex items-center justify-center shadow-lg animate-pulse">
+          <Shield className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+        </div>
+        <div className="text-center space-y-1">
+          <div className="flex items-center justify-center space-x-2 text-slate-800 dark:text-white font-bold text-sm">
+            <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
+            <span>State Command Grid Security Gateway</span>
+          </div>
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+            Redirecting to Gujarat Police Officer Login Portal...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

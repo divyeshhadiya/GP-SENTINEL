@@ -1078,16 +1078,23 @@ async function createPresentation() {
     s.addNotes("Thank you to the evaluation committee. The prototype is completely operational and ready for jury assessment and field deployment.");
   }
 
-  // Save presentation to both root and public/assets/
-  const outputPath1 = path.resolve(__dirname, "../public/assets/GP-SENTINEL_Official_Pitch_Deck.pptx");
-  const outputPath2 = path.resolve(__dirname, "../GP-SENTINEL_Official_Pitch_Deck.pptx");
+  // Save presentation to C:\Download, root, and public/assets/
+  const downloadDir = "C:\\Download";
+  if (!fs.existsSync(downloadDir)) {
+    fs.mkdirSync(downloadDir, { recursive: true });
+  }
 
-  await pres.writeFile({ fileName: outputPath1 });
-  await pres.writeFile({ fileName: outputPath2 });
+  const outputPaths = [
+    path.join(downloadDir, "GP-SENTINEL_Complete_Project_Presentation.pptx"),
+    path.join(downloadDir, "GP-SENTINEL_Official_Pitch_Deck.pptx"),
+    path.resolve(__dirname, "../public/assets/GP-SENTINEL_Official_Pitch_Deck.pptx"),
+    path.resolve(__dirname, "../GP-SENTINEL_Official_Pitch_Deck.pptx")
+  ];
 
-  console.log("SUCCESS: PowerPoint Pitch Deck created at:");
-  console.log(" - " + outputPath1);
-  console.log(" - " + outputPath2);
+  for (const outPath of outputPaths) {
+    await pres.writeFile({ fileName: outPath });
+    console.log("SUCCESS: PowerPoint Pitch Deck saved to: " + outPath);
+  }
 }
 
 createPresentation().catch(err => {

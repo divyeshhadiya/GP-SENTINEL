@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  sentinel_postgres:
+    image: postgres:16-alpine
+    container_name: sentinel_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: sentinel_user
+      POSTGRES_PASSWORD: sentinel_password_2026
+      POSTGRES_DB: sentinel_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sentinel_user -d sentinel_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  sentinel_backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sentinel_backend
+    restart: always
+    depends_on:
+      sentinel_postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://sentinel_user:sentinel_password_2026@sentinel_postgres:5432/sentinel_db
+      - SECRET_KEY=gujarat-police-sentinel-scrb-secret-2026-secure-key
+    ports:
+      - "8000:8000"
+
+volumes:
+  postgres_data:
