@@ -1,228 +1,67 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.0.3",
   "info": {
-    "title": "GP-SENTINEL Backend API",
-    "description": "Unified Video Intelligence & Multi-Department CCTV Federation Platform",
-    "version": "2026.4.1-LTS"
+    "title": "GP-SENTINEL Unified REST API",
+    "description": "Gujarat Police State Crime Record Bureau (SCRB) • Unified Statewide Video Intelligence & Multi-Department CCTV Federation API",
+    "version": "2026.4.1-LTS",
+    "contact": {
+      "name": "Gujarat Police SCRB Video Intelligence Command",
+      "url": "https://sentinel.gujarat.gov.in"
+    }
   },
+  "servers": [
+    {
+      "url": "https://gp-sentinel.vercel.app",
+      "description": "Production Server (Vercel)"
+    },
+    {
+      "url": "http://localhost:3000",
+      "description": "Local Development Server"
+    }
+  ],
   "paths": {
-    "/api/v1/auth/login": {
-      "post": {
-        "tags": [
-          "Authentication & Access Control"
-        ],
-        "summary": "Login",
-        "operationId": "login_api_v1_auth_login_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Token"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/auth/me": {
+    "/api/cameras": {
       "get": {
-        "tags": [
-          "Authentication & Access Control"
-        ],
-        "summary": "Get Current Officer",
-        "operationId": "get_current_officer_api_v1_auth_me_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserProfileResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/auth/otp": {
-      "post": {
-        "tags": [
-          "Authentication & Access Control"
-        ],
-        "summary": "Verify Otp",
-        "operationId": "verify_otp_api_v1_auth_otp_post",
-        "parameters": [
-          {
-            "name": "email",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Email"
-            }
-          },
-          {
-            "name": "code",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Code"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/cameras": {
-      "get": {
-        "tags": [
-          "Unified GIS Camera Registry"
-        ],
-        "summary": "List Cameras",
-        "operationId": "list_cameras_api_v1_cameras_get",
+        "tags": ["GIS CCTV Registry"],
+        "summary": "List all registered CCTV camera nodes",
+        "description": "Retrieve statewide CCTV inventory across 26 government departments with PostGIS coordinates, RTSP stream URLs, VMS vendors, codecs, and AMC health status.",
         "parameters": [
           {
             "name": "department",
             "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Department"
-            }
+            "schema": { "type": "string" },
+            "description": "Filter by department (e.g. 'Gujarat Police', 'GSRTC', 'AMC')"
           },
           {
             "name": "district",
             "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "District"
-            }
+            "schema": { "type": "string" },
+            "description": "Filter by district (e.g. 'Gandhinagar', 'Ahmedabad', 'Surat')"
           },
           {
             "name": "status",
             "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Status"
-            }
-          },
-          {
-            "name": "cameraType",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Cameratype"
-            }
+            "schema": { "type": "string", "enum": ["Online", "Degraded", "Offline"] },
+            "description": "Filter by operational ping status"
           },
           {
             "name": "q",
             "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Q"
-            }
+            "schema": { "type": "string" },
+            "description": "Text search across camera ID, landmark, and junction"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
+            "description": "Successful retrieval of camera inventory",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CameraListResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "type": "object",
+                  "properties": {
+                    "total": { "type": "integer" },
+                    "cameras": { "type": "array", "items": { "$ref": "#/components/schemas/Camera" } }
+                  }
                 }
               }
             }
@@ -230,59 +69,52 @@
         }
       },
       "post": {
-        "tags": [
-          "Unified GIS Camera Registry"
-        ],
-        "summary": "Onboard Camera",
-        "operationId": "onboard_camera_api_v1_cameras_post",
+        "tags": ["GIS CCTV Registry"],
+        "summary": "Onboard a new CCTV node",
+        "description": "Register a new departmental camera into the centralized state inventory.",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CameraCreate"
-              }
+              "schema": { "$ref": "#/components/schemas/CameraInput" }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CameraResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
+            "description": "Camera node successfully registered"
           }
         }
       }
     },
-    "/api/v1/alerts": {
+    "/api/alerts": {
       "get": {
-        "tags": [
-          "Live Incident Alerts & PCR Dispatch"
+        "tags": ["Live Incidents & Dispatch"],
+        "summary": "Fetch active incident alert queue",
+        "description": "Streams real-time AI alert detections matched against VAHAN and e-GujCop watchlists.",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["NEW", "ACKNOWLEDGED", "DISPATCHED", "RESOLVED"] }
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"] }
+          }
         ],
-        "summary": "Get Alerts",
-        "operationId": "get_alerts_api_v1_alerts_get",
         "responses": {
           "200": {
-            "description": "Successful Response",
+            "description": "Active alert records",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AlertListResponse"
+                  "type": "object",
+                  "properties": {
+                    "total": { "type": "integer" },
+                    "alerts": { "type": "array", "items": { "$ref": "#/components/schemas/Alert" } }
+                  }
                 }
               }
             }
@@ -290,90 +122,62 @@
         }
       },
       "post": {
-        "tags": [
-          "Live Incident Alerts & PCR Dispatch"
-        ],
-        "summary": "Create Alert",
-        "operationId": "create_alert_api_v1_alerts_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AlertCreate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AlertResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/alerts/{alert_id}": {
-      "patch": {
-        "tags": [
-          "Live Incident Alerts & PCR Dispatch"
-        ],
-        "summary": "Update Alert",
-        "operationId": "update_alert_api_v1_alerts__alert_id__patch",
-        "parameters": [
-          {
-            "name": "alert_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Alert Id"
-            }
-          }
-        ],
+        "tags": ["Live Incidents & Dispatch"],
+        "summary": "Update incident status / Dispatch PCR patrol",
+        "description": "Acknowledge an alert or dispatch the nearest PCR patrol intercept van.",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AlertUpdate"
+                "type": "object",
+                "properties": {
+                  "alertId": { "type": "string" },
+                  "status": { "type": "string", "enum": ["ACKNOWLEDGED", "DISPATCHED", "RESOLVED", "FALSE_POSITIVE"] },
+                  "dispatchedUnit": { "type": "object" }
+                },
+                "required": ["alertId", "status"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Alert status updated successfully" }
+        }
+      }
+    },
+    "/api/vehicle/track": {
+      "post": {
+        "tags": ["Vehicle Traversal Tracking"],
+        "summary": "Reconstruct vehicle route & traversal trajectory",
+        "description": "Queries ANPR camera grid to reconstruct multi-hop corridor movement for a target license plate.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "plate": { "type": "string", "example": "GJ-01-AB-1234" }
+                },
+                "required": ["plate"]
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Successful Response",
+            "description": "Chronological checkpoints with timestamps, speeds, and Section 65B forensic hash",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AlertResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "type": "object",
+                  "properties": {
+                    "plate": { "type": "string" },
+                    "totalSightings": { "type": "integer" },
+                    "sightings": { "type": "array", "items": { "$ref": "#/components/schemas/VehicleSighting" } },
+                    "watchlistMatch": { "type": "object" }
+                  }
                 }
               }
             }
@@ -381,1850 +185,162 @@
         }
       }
     },
-    "/api/v1/vehicle/track": {
+    "/api/watchlists": {
       "get": {
-        "tags": [
-          "ANPR Vehicle Traversal Tracking"
-        ],
-        "summary": "Track Vehicle",
-        "operationId": "track_vehicle_api_v1_vehicle_track_get",
-        "parameters": [
-          {
-            "name": "plate",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "Target plate number, e.g. GJ-01-AB-1234",
-              "title": "Plate"
-            },
-            "description": "Target plate number, e.g. GJ-01-AB-1234"
-          }
-        ],
+        "tags": ["Watchlists & Intelligence"],
+        "summary": "List cross-agency watchlists",
+        "description": "Returns VAHAN stolen vehicle registry and e-GujCop criminal blacklist records.",
         "responses": {
           "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VehicleTrackResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/vehicle/trajectory/{plate}": {
-      "get": {
-        "tags": [
-          "ANPR Vehicle Traversal Tracking"
-        ],
-        "summary": "Get Trajectory By Plate",
-        "operationId": "get_trajectory_by_plate_api_v1_vehicle_trajectory__plate__get",
-        "parameters": [
-          {
-            "name": "plate",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Plate"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VehicleTrackResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/vehicle/search": {
-      "get": {
-        "tags": [
-          "ANPR Vehicle Traversal Tracking"
-        ],
-        "summary": "Search Vehicles",
-        "operationId": "search_vehicles_api_v1_vehicle_search_get",
-        "parameters": [
-          {
-            "name": "q",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "description": "Query plate search prefix or full number",
-              "default": "",
-              "title": "Q"
-            },
-            "description": "Query plate search prefix or full number"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/watchlists": {
-      "get": {
-        "tags": [
-          "VAHAN & eGujCop Watchlists"
-        ],
-        "summary": "List Watchlists",
-        "operationId": "list_watchlists_api_v1_watchlists_get",
-        "parameters": [
-          {
-            "name": "source",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Source"
-            }
-          },
-          {
-            "name": "category",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Category"
-            }
-          },
-          {
-            "name": "severity",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Severity"
-            }
-          },
-          {
-            "name": "q",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Q"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WatchlistListResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
+            "description": "Watchlist database records"
           }
         }
       },
       "post": {
-        "tags": [
-          "VAHAN & eGujCop Watchlists"
-        ],
-        "summary": "Add Watchlist Entry",
-        "operationId": "add_watchlist_entry_api_v1_watchlists_post",
+        "tags": ["Watchlists & Intelligence"],
+        "summary": "Add vehicle to active watchlist",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/WatchlistInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Watchlist entry created" }
+        }
+      }
+    },
+    "/api/gap-analysis": {
+      "get": {
+        "tags": ["Analytics & Gap Reports"],
+        "summary": "Statewide surveillance blindspot gap analysis",
+        "description": "Returns 33-district CCTV density, coverage ratios, and high-priority blindspot recommendations.",
+        "responses": {
+          "200": { "description": "District coverage and gap analysis dataset" }
+        }
+      }
+    },
+    "/api/ingest": {
+      "get": {
+        "tags": ["Video Streaming Sandbox"],
+        "summary": "Live video streaming ingestion catalog",
+        "description": "Returns RTSP, HLS, and WebRTC streaming endpoints for developer sandbox integration.",
+        "responses": {
+          "200": { "description": "Active RTSP/HLS stream URLs" }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Officer portal authentication",
+        "description": "Authenticates police credentials and issues signed session JWT tokens.",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/WatchlistCreate"
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string", "example": "dgp.police@gujarat.gov.in" },
+                  "password": { "type": "string", "example": "GujaratPolice@2026" }
+                },
+                "required": ["email", "password"]
               }
             }
           }
         },
         "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WatchlistResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/gap-analysis": {
-      "get": {
-        "tags": [
-          "Statewide Surveillance Gap Analysis"
-        ],
-        "summary": "Get Gap Analysis",
-        "operationId": "get_gap_analysis_api_v1_gap_analysis_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/ingest": {
-      "get": {
-        "tags": [
-          "Sandbox Video Streaming Catalog"
-        ],
-        "summary": "Get Ingest Catalog",
-        "operationId": "get_ingest_catalog_api_v1_ingest_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/": {
-      "get": {
-        "tags": [
-          "Health"
-        ],
-        "summary": "Root",
-        "operationId": "root__get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/health": {
-      "get": {
-        "tags": [
-          "Health"
-        ],
-        "summary": "Health Check",
-        "operationId": "health_check_api_v1_health_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/health": {
-      "get": {
-        "tags": [
-          "Health"
-        ],
-        "summary": "Health Check",
-        "operationId": "health_check_health_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
+          "200": { "description": "Authenticated officer profile & JWT token" }
         }
       }
     }
   },
   "components": {
     "schemas": {
-      "AlertCreate": {
-        "properties": {
-          "registrationNumber": {
-            "type": "string",
-            "title": "Registrationnumber"
-          },
-          "cameraId": {
-            "type": "string",
-            "title": "Cameraid"
-          },
-          "cameraName": {
-            "type": "string",
-            "title": "Cameraname"
-          },
-          "locationName": {
-            "type": "string",
-            "title": "Locationname"
-          },
-          "coordinates": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array",
-            "title": "Coordinates"
-          },
-          "severity": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Severity",
-            "default": "HIGH"
-          },
-          "status": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Status",
-            "default": "NEW"
-          },
-          "notes": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Notes",
-            "default": ""
-          },
-          "sightingId": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Sightingid"
-          },
-          "watchlistEntry": {
-            "anyOf": [
-              {},
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Watchlistentry"
-          },
-          "dispatchedUnit": {
-            "anyOf": [
-              {},
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Dispatchedunit"
-          }
-        },
+      "Camera": {
         "type": "object",
-        "required": [
-          "registrationNumber",
-          "cameraId",
-          "cameraName",
-          "locationName",
-          "coordinates"
-        ],
-        "title": "AlertCreate"
+        "properties": {
+          "id": { "type": "string", "example": "CAM-GNR-001" },
+          "name": { "type": "string", "example": "Gandhinagar Police HQ Gate 1" },
+          "department": { "type": "string", "example": "Gujarat Police" },
+          "district": { "type": "string", "example": "Gandhinagar" },
+          "locationName": { "type": "string", "example": "Sector 10 Circle, Gandhinagar" },
+          "coordinates": { "type": "array", "items": { "type": "number" }, "example": [23.223, 72.649] },
+          "status": { "type": "string", "enum": ["Online", "Degraded", "Offline"] },
+          "cameraType": { "type": "string", "example": "ANPR" },
+          "vendor": { "type": "string", "example": "Hikvision ANPR Pro" },
+          "vmsVendor": { "type": "string", "example": "Hikvision" },
+          "resolution": { "type": "string", "example": "1080p (FHD)" },
+          "fps": { "type": "integer", "example": 30 },
+          "codec": { "type": "string", "example": "H.265" },
+          "storageDays": { "type": "integer", "example": 30 },
+          "storageType": { "type": "string", "example": "Hybrid SAN" },
+          "rtspUrl": { "type": "string", "example": "rtsp://sandbox.sentinel.gujarat.gov.in:8554/cam-gnr-001" },
+          "hlsUrl": { "type": "string", "example": "https://streams.sentinel.gujarat.gov.in/hls/cam-gnr-001/index.m3u8" },
+          "ipAddress": { "type": "string", "example": "10.18.4.12" },
+          "amcActive": { "type": "boolean", "example": true },
+          "pingMs": { "type": "integer", "example": 14 }
+        }
       },
-      "AlertListResponse": {
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "title": "Success",
-            "default": true
-          },
-          "total": {
-            "type": "integer",
-            "title": "Total"
-          },
-          "alerts": {
-            "items": {
-              "$ref": "#/components/schemas/AlertResponse"
-            },
-            "type": "array",
-            "title": "Alerts"
-          }
-        },
+      "CameraInput": {
         "type": "object",
-        "required": [
-          "total",
-          "alerts"
-        ],
-        "title": "AlertListResponse"
+        "required": ["name", "department", "district", "locationName", "coordinates"],
+        "properties": {
+          "name": { "type": "string" },
+          "department": { "type": "string" },
+          "district": { "type": "string" },
+          "locationName": { "type": "string" },
+          "coordinates": { "type": "array", "items": { "type": "number" } },
+          "cameraType": { "type": "string" },
+          "rtspUrl": { "type": "string" },
+          "storageDays": { "type": "integer" }
+        }
       },
-      "AlertResponse": {
-        "properties": {
-          "registrationNumber": {
-            "type": "string",
-            "title": "Registrationnumber"
-          },
-          "cameraId": {
-            "type": "string",
-            "title": "Cameraid"
-          },
-          "cameraName": {
-            "type": "string",
-            "title": "Cameraname"
-          },
-          "locationName": {
-            "type": "string",
-            "title": "Locationname"
-          },
-          "coordinates": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array",
-            "title": "Coordinates"
-          },
-          "severity": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Severity",
-            "default": "HIGH"
-          },
-          "status": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Status",
-            "default": "NEW"
-          },
-          "notes": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Notes",
-            "default": ""
-          },
-          "sightingId": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Sightingid"
-          },
-          "watchlistEntry": {
-            "anyOf": [
-              {},
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Watchlistentry"
-          },
-          "dispatchedUnit": {
-            "anyOf": [
-              {},
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Dispatchedunit"
-          },
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "timestamp": {
-            "type": "string",
-            "title": "Timestamp"
-          }
-        },
+      "Alert": {
         "type": "object",
-        "required": [
-          "registrationNumber",
-          "cameraId",
-          "cameraName",
-          "locationName",
-          "coordinates",
-          "id",
-          "timestamp"
-        ],
-        "title": "AlertResponse"
+        "properties": {
+          "id": { "type": "string", "example": "ALT-2026-0891" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "cameraId": { "type": "string" },
+          "cameraName": { "type": "string" },
+          "registrationNumber": { "type": "string", "example": "GJ-01-AB-1234" },
+          "locationName": { "type": "string" },
+          "coordinates": { "type": "array", "items": { "type": "number" } },
+          "status": { "type": "string", "enum": ["NEW", "ACKNOWLEDGED", "DISPATCHED", "RESOLVED"] },
+          "dispatchedUnit": { "type": "object" }
+        }
       },
-      "AlertUpdate": {
-        "properties": {
-          "status": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Status"
-          },
-          "notes": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Notes"
-          },
-          "dispatchedUnit": {
-            "anyOf": [
-              {},
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Dispatchedunit"
-          }
-        },
+      "VehicleSighting": {
         "type": "object",
-        "title": "AlertUpdate"
+        "properties": {
+          "id": { "type": "string" },
+          "cameraId": { "type": "string" },
+          "cameraName": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "locationName": { "type": "string" },
+          "district": { "type": "string" },
+          "coordinates": { "type": "array", "items": { "type": "number" } },
+          "speedKmh": { "type": "integer" },
+          "confidence": { "type": "number", "example": 0.984 },
+          "heading": { "type": "string", "example": "South-West towards Surat" },
+          "ptsMs": { "type": "integer" },
+          "sha256Hash": { "type": "string" }
+        }
       },
-      "CameraCreate": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name"
-          },
-          "department": {
-            "type": "string",
-            "title": "Department"
-          },
-          "locationName": {
-            "type": "string",
-            "title": "Locationname"
-          },
-          "district": {
-            "type": "string",
-            "title": "District"
-          },
-          "coordinates": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array",
-            "title": "Coordinates"
-          },
-          "status": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Status",
-            "default": "Online"
-          },
-          "cameraType": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Cameratype",
-            "default": "ANPR"
-          },
-          "vendor": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Vendor",
-            "default": "Standard ONVIF Camera"
-          },
-          "vmsVendor": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Vmsvendor",
-            "default": "Direct RTSP"
-          },
-          "resolution": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Resolution",
-            "default": "1080p (FHD)"
-          },
-          "fps": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Fps",
-            "default": 25
-          },
-          "codec": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Codec",
-            "default": "H.264"
-          },
-          "storageDays": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Storagedays",
-            "default": 15
-          },
-          "storageType": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Storagetype",
-            "default": "Local NVR"
-          },
-          "rtspUrl": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Rtspurl",
-            "default": "rtsp://10.0.0.1:8554/live"
-          },
-          "hlsUrl": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Hlsurl",
-            "default": ""
-          },
-          "ipAddress": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ipaddress",
-            "default": "10.18.5.50"
-          },
-          "installationYear": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Installationyear",
-            "default": 2026
-          },
-          "amcActive": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Amcactive",
-            "default": true
-          },
-          "fovAngle": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Fovangle",
-            "default": 0
-          },
-          "coverageRadiusMeters": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Coverageradiusmeters",
-            "default": 100
-          },
-          "lastHeartbeat": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Lastheartbeat",
-            "default": "Just now"
-          },
-          "pingMs": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Pingms",
-            "default": 15
-          },
-          "departmentPoc": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Departmentpoc",
-            "default": "Field Incharge"
-          },
-          "id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Id"
-          }
-        },
+      "WatchlistInput": {
         "type": "object",
-        "required": [
-          "name",
-          "department",
-          "locationName",
-          "district",
-          "coordinates"
-        ],
-        "title": "CameraCreate"
-      },
-      "CameraListResponse": {
+        "required": ["identifier", "category", "source"],
         "properties": {
-          "success": {
-            "type": "boolean",
-            "title": "Success",
-            "default": true
-          },
-          "total": {
-            "type": "integer",
-            "title": "Total"
-          },
-          "cameras": {
-            "items": {
-              "$ref": "#/components/schemas/CameraResponse"
-            },
-            "type": "array",
-            "title": "Cameras"
-          }
-        },
-        "type": "object",
-        "required": [
-          "total",
-          "cameras"
-        ],
-        "title": "CameraListResponse"
-      },
-      "CameraResponse": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name"
-          },
-          "department": {
-            "type": "string",
-            "title": "Department"
-          },
-          "locationName": {
-            "type": "string",
-            "title": "Locationname"
-          },
-          "district": {
-            "type": "string",
-            "title": "District"
-          },
-          "coordinates": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array",
-            "title": "Coordinates"
-          },
-          "status": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Status",
-            "default": "Online"
-          },
-          "cameraType": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Cameratype",
-            "default": "ANPR"
-          },
-          "vendor": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Vendor",
-            "default": "Standard ONVIF Camera"
-          },
-          "vmsVendor": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Vmsvendor",
-            "default": "Direct RTSP"
-          },
-          "resolution": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Resolution",
-            "default": "1080p (FHD)"
-          },
-          "fps": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Fps",
-            "default": 25
-          },
-          "codec": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Codec",
-            "default": "H.264"
-          },
-          "storageDays": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Storagedays",
-            "default": 15
-          },
-          "storageType": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Storagetype",
-            "default": "Local NVR"
-          },
-          "rtspUrl": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Rtspurl",
-            "default": "rtsp://10.0.0.1:8554/live"
-          },
-          "hlsUrl": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Hlsurl",
-            "default": ""
-          },
-          "ipAddress": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ipaddress",
-            "default": "10.18.5.50"
-          },
-          "installationYear": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Installationyear",
-            "default": 2026
-          },
-          "amcActive": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Amcactive",
-            "default": true
-          },
-          "fovAngle": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Fovangle",
-            "default": 0
-          },
-          "coverageRadiusMeters": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Coverageradiusmeters",
-            "default": 100
-          },
-          "lastHeartbeat": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Lastheartbeat",
-            "default": "Just now"
-          },
-          "pingMs": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Pingms",
-            "default": 15
-          },
-          "departmentPoc": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Departmentpoc",
-            "default": "Field Incharge"
-          },
-          "id": {
-            "type": "string",
-            "title": "Id"
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "department",
-          "locationName",
-          "district",
-          "coordinates",
-          "id"
-        ],
-        "title": "CameraResponse"
-      },
-      "HTTPValidationError": {
-        "properties": {
-          "detail": {
-            "items": {
-              "$ref": "#/components/schemas/ValidationError"
-            },
-            "type": "array",
-            "title": "Detail"
-          }
-        },
-        "type": "object",
-        "title": "HTTPValidationError"
-      },
-      "LoginRequest": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "title": "Email"
-          },
-          "password": {
-            "type": "string",
-            "title": "Password"
-          }
-        },
-        "type": "object",
-        "required": [
-          "email",
-          "password"
-        ],
-        "title": "LoginRequest"
-      },
-      "Token": {
-        "properties": {
-          "access_token": {
-            "type": "string",
-            "title": "Access Token"
-          },
-          "token_type": {
-            "type": "string",
-            "title": "Token Type",
-            "default": "bearer"
-          },
-          "user": {
-            "$ref": "#/components/schemas/UserProfileResponse"
-          }
-        },
-        "type": "object",
-        "required": [
-          "access_token",
-          "user"
-        ],
-        "title": "Token"
-      },
-      "TrajectorySummary": {
-        "properties": {
-          "totalSightings": {
-            "type": "integer",
-            "title": "Totalsightings"
-          },
-          "firstSeen": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Firstseen"
-          },
-          "lastSeen": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Lastseen"
-          },
-          "lastLocation": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Lastlocation"
-          },
-          "lastDistrict": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Lastdistrict"
-          },
-          "lastCoordinates": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "number"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Lastcoordinates"
-          },
-          "avgSpeedKmh": {
-            "type": "integer",
-            "title": "Avgspeedkmh",
-            "default": 0
-          },
-          "durationMinutes": {
-            "type": "integer",
-            "title": "Durationminutes",
-            "default": 0
-          },
-          "primaryHeading": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Primaryheading"
-          }
-        },
-        "type": "object",
-        "required": [
-          "totalSightings"
-        ],
-        "title": "TrajectorySummary"
-      },
-      "UserProfileResponse": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "name": {
-            "type": "string",
-            "title": "Name"
-          },
-          "badgeId": {
-            "type": "string",
-            "title": "Badgeid"
-          },
-          "rank": {
-            "type": "string",
-            "title": "Rank"
-          },
-          "department": {
-            "type": "string",
-            "title": "Department"
-          },
-          "role": {
-            "type": "string",
-            "title": "Role"
-          },
-          "email": {
-            "type": "string",
-            "title": "Email"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "name",
-          "badgeId",
-          "rank",
-          "department",
-          "role",
-          "email"
-        ],
-        "title": "UserProfileResponse"
-      },
-      "ValidationError": {
-        "properties": {
-          "loc": {
-            "items": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "type": "array",
-            "title": "Location"
-          },
-          "msg": {
-            "type": "string",
-            "title": "Message"
-          },
-          "type": {
-            "type": "string",
-            "title": "Error Type"
-          },
-          "input": {
-            "title": "Input"
-          },
-          "ctx": {
-            "type": "object",
-            "title": "Context"
-          }
-        },
-        "type": "object",
-        "required": [
-          "loc",
-          "msg",
-          "type"
-        ],
-        "title": "ValidationError"
-      },
-      "VehicleSightingResponse": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "registrationNumber": {
-            "type": "string",
-            "title": "Registrationnumber"
-          },
-          "cameraId": {
-            "type": "string",
-            "title": "Cameraid"
-          },
-          "cameraName": {
-            "type": "string",
-            "title": "Cameraname"
-          },
-          "locationName": {
-            "type": "string",
-            "title": "Locationname"
-          },
-          "district": {
-            "type": "string",
-            "title": "District"
-          },
-          "coordinates": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array",
-            "title": "Coordinates"
-          },
-          "timestamp": {
-            "type": "string",
-            "title": "Timestamp"
-          },
-          "speedKmh": {
-            "type": "integer",
-            "title": "Speedkmh"
-          },
-          "heading": {
-            "type": "string",
-            "title": "Heading"
-          },
-          "confidence": {
-            "type": "number",
-            "title": "Confidence"
-          },
-          "vehicleColor": {
-            "type": "string",
-            "title": "Vehiclecolor"
-          },
-          "vehicleType": {
-            "type": "string",
-            "title": "Vehicletype"
-          },
-          "imageUrl": {
-            "type": "string",
-            "title": "Imageurl"
-          },
-          "plateCropUrl": {
-            "type": "string",
-            "title": "Platecropurl"
-          },
-          "lane": {
-            "type": "integer",
-            "title": "Lane"
-          },
-          "forensicHash": {
-            "type": "string",
-            "title": "Forensichash"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "registrationNumber",
-          "cameraId",
-          "cameraName",
-          "locationName",
-          "district",
-          "coordinates",
-          "timestamp",
-          "speedKmh",
-          "heading",
-          "confidence",
-          "vehicleColor",
-          "vehicleType",
-          "imageUrl",
-          "plateCropUrl",
-          "lane",
-          "forensicHash"
-        ],
-        "title": "VehicleSightingResponse"
-      },
-      "VehicleTrackResponse": {
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "title": "Success",
-            "default": true
-          },
-          "registrationNumber": {
-            "type": "string",
-            "title": "Registrationnumber"
-          },
-          "isWatchlistMatch": {
-            "type": "boolean",
-            "title": "Iswatchlistmatch"
-          },
-          "watchlistAlert": {
-            "anyOf": [
-              {},
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Watchlistalert"
-          },
-          "summary": {
-            "$ref": "#/components/schemas/TrajectorySummary"
-          },
-          "sightings": {
-            "items": {
-              "$ref": "#/components/schemas/VehicleSightingResponse"
-            },
-            "type": "array",
-            "title": "Sightings"
-          }
-        },
-        "type": "object",
-        "required": [
-          "registrationNumber",
-          "isWatchlistMatch",
-          "summary",
-          "sightings"
-        ],
-        "title": "VehicleTrackResponse"
-      },
-      "WatchlistCreate": {
-        "properties": {
-          "identifier": {
-            "type": "string",
-            "title": "Identifier"
-          },
-          "source": {
-            "type": "string",
-            "title": "Source"
-          },
-          "category": {
-            "type": "string",
-            "title": "Category"
-          },
-          "severity": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Severity",
-            "default": "HIGH"
-          },
-          "details": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Details",
-            "default": ""
-          },
-          "firNumber": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Firnumber",
-            "default": ""
-          },
-          "policeStation": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Policestation",
-            "default": ""
-          },
-          "registeredOwner": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Registeredowner",
-            "default": ""
-          },
-          "vehicleMakeModel": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Vehiclemakemodel",
-            "default": ""
-          },
-          "dateAdded": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Dateadded",
-            "default": ""
-          },
-          "status": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Status",
-            "default": "ACTIVE"
-          }
-        },
-        "type": "object",
-        "required": [
-          "identifier",
-          "source",
-          "category"
-        ],
-        "title": "WatchlistCreate"
-      },
-      "WatchlistListResponse": {
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "title": "Success",
-            "default": true
-          },
-          "total": {
-            "type": "integer",
-            "title": "Total"
-          },
-          "watchlists": {
-            "items": {
-              "$ref": "#/components/schemas/WatchlistResponse"
-            },
-            "type": "array",
-            "title": "Watchlists"
-          }
-        },
-        "type": "object",
-        "required": [
-          "total",
-          "watchlists"
-        ],
-        "title": "WatchlistListResponse"
-      },
-      "WatchlistResponse": {
-        "properties": {
-          "identifier": {
-            "type": "string",
-            "title": "Identifier"
-          },
-          "source": {
-            "type": "string",
-            "title": "Source"
-          },
-          "category": {
-            "type": "string",
-            "title": "Category"
-          },
-          "severity": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Severity",
-            "default": "HIGH"
-          },
-          "details": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Details",
-            "default": ""
-          },
-          "firNumber": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Firnumber",
-            "default": ""
-          },
-          "policeStation": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Policestation",
-            "default": ""
-          },
-          "registeredOwner": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Registeredowner",
-            "default": ""
-          },
-          "vehicleMakeModel": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Vehiclemakemodel",
-            "default": ""
-          },
-          "dateAdded": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Dateadded",
-            "default": ""
-          },
-          "status": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Status",
-            "default": "ACTIVE"
-          },
-          "id": {
-            "type": "string",
-            "title": "Id"
-          }
-        },
-        "type": "object",
-        "required": [
-          "identifier",
-          "source",
-          "category",
-          "id"
-        ],
-        "title": "WatchlistResponse"
+          "identifier": { "type": "string", "example": "GJ-01-AB-1234" },
+          "category": { "type": "string", "example": "Stolen Vehicle" },
+          "source": { "type": "string", "example": "VAHAN" },
+          "details": { "type": "string" },
+          "firNumber": { "type": "string" },
+          "policeStation": { "type": "string" }
+        }
       }
     }
   }
