@@ -61,9 +61,10 @@ A comprehensive, enterprise-grade unified surveillance and real-time intelligenc
 ```bash
 SentinelProject/
 ├── public/                          # Static public assets
-│   ├── assets/                      # Brand assets & emblems
+│   ├── assets/                      # Brand assets & evaluation deliverables
 │   │   ├── gujarat-police-logo.png  # Official high-res Gujarat Police crest
-│   │   └── ihub-logo.png            # Official i-Hub Gujarat Government Enterprise logo
+│   │   ├── GP-SENTINEL_Complete_Project_Presentation.pptx # Pitch deck
+│   │   └── GP-SENTINEL_Complete_Project_Walkthrough_Video.mp4 # Video demo
 │   └── favicon.ico                  # Browser tab favicon
 ├── src/
 │   ├── app/                         # Next.js App Router route hierarchy
