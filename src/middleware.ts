@@ -13,6 +13,7 @@ export function middleware(request: NextRequest) {
     pathname.startsWith('/docs') ||
     pathname.startsWith('/openapi.json') ||
     pathname.startsWith('/login') ||
+    pathname.startsWith('/logout') ||
     pathname.startsWith('/signup') ||
     pathname === '/favicon.ico' ||
     pathname === '/icon.png'

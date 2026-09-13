@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/layout/Header";
-import Sidebar from "@/components/layout/Sidebar";
+import AppLayoutWrapper from "@/components/layout/AppLayoutWrapper";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { NavProvider } from "@/context/NavContext";
@@ -43,13 +42,7 @@ export default function RootLayout({
         <ThemeProvider>
           <AuthProvider>
             <NavProvider>
-              <Header />
-              <div className="flex flex-1 overflow-hidden">
-                <Sidebar />
-                <main className="flex-1 overflow-y-auto bg-slate-100/60 dark:bg-slate-950/60 p-3 sm:p-4 md:p-6 transition-all">
-                  {children}
-                </main>
-              </div>
+              <AppLayoutWrapper>{children}</AppLayoutWrapper>
             </NavProvider>
           </AuthProvider>
         </ThemeProvider>

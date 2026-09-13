@@ -24,7 +24,7 @@ import {
 
 export default function LoginPage() {
   const router = useRouter();
-  const { user, login, isAuthenticated } = useAuth();
+  const { user, login, logout, isAuthenticated } = useAuth();
 
   // Authentication method: "password" vs "otp"
   const [credentialMethod, setCredentialMethod] = useState<"password" | "otp">("password");
@@ -102,8 +102,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      // Try backend FastAPI authentication endpoint first
-      const res = await fetch("/api/v1/auth/login", {
+      const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -112,13 +111,16 @@ export default function LoginPage() {
         const data = await res.json();
         if (data.user) {
           login(data.user);
+          if (typeof document !== "undefined") {
+            document.cookie = "sentinel_auth=1; path=/; max-age=86400; SameSite=Lax";
+          }
           setIsLoading(false);
-          router.push("/");
+          window.location.href = "/";
           return;
         }
       }
     } catch (err) {
-      console.warn("Backend /api/v1/auth/login offline or starting, continuing with local verification", err);
+      console.warn("API /api/auth/login failed, continuing with local verification", err);
     }
 
     // Graceful verified profile mapping based on email/role
@@ -155,8 +157,11 @@ export default function LoginPage() {
     }
 
     login(profile);
+    if (typeof document !== "undefined") {
+      document.cookie = "sentinel_auth=1; path=/; max-age=86400; SameSite=Lax";
+    }
     setIsLoading(false);
-    router.push("/");
+    window.location.href = "/";
   };
 
   const handleForgotSubmit = (e: React.FormEvent) => {
@@ -259,18 +264,27 @@ export default function LoginPage() {
                   </span>
                 </div>
                 <div className="flex items-center space-x-2 shrink-0">
-                  <Link
-                    href="/"
-                    className="px-2.5 py-1 bg-blue-600 text-white rounded font-bold text-[11px] hover:bg-blue-500"
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (typeof document !== "undefined") {
+                        document.cookie = "sentinel_auth=1; path=/; max-age=86400; SameSite=Lax";
+                      }
+                      window.location.href = "/";
+                    }}
+                    className="px-2.5 py-1 bg-blue-600 text-white rounded font-bold text-[11px] hover:bg-blue-500 cursor-pointer"
                   >
                     Go to Dashboard
-                  </Link>
-                  <Link
-                    href="/logout"
-                    className="px-2 py-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded text-[11px] hover:bg-slate-300"
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      logout();
+                    }}
+                    className="px-2 py-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded text-[11px] hover:bg-slate-300 cursor-pointer"
                   >
                     Sign Out
-                  </Link>
+                  </button>
                 </div>
               </div>
             )}
