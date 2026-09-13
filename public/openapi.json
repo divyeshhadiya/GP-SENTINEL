@@ -1,53 +1,102 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "GP-SENTINEL Unified REST API",
-    "description": "Gujarat Police State Crime Record Bureau (SCRB) • Unified Statewide Video Intelligence & Multi-Department CCTV Federation API",
+    "title": "GP-SENTINEL Unified Video Intelligence & Security API",
+    "description": "Gujarat Police State Crime Record Bureau (SCRB) • Unified Statewide Video Intelligence, ANPR Traversal Tracking & Multi-Department CCTV Federation REST API.",
     "version": "2026.4.1-LTS",
     "contact": {
       "name": "Gujarat Police SCRB Video Intelligence Command",
-      "url": "https://sentinel.gujarat.gov.in"
+      "url": "https://gp-sentinel.vercel.app"
+    },
+    "license": {
+      "name": "State Security Restricted License",
+      "url": "https://police.gujarat.gov.in"
     }
   },
   "servers": [
     {
       "url": "https://gp-sentinel.vercel.app",
-      "description": "Production Server (Vercel)"
+      "description": "Production Server (Vercel Production Deployment)"
     },
     {
       "url": "http://localhost:3000",
       "description": "Local Development Server"
     }
   ],
+  "tags": [
+    {
+      "name": "GIS CCTV Registry",
+      "description": "Statewide 26-department CCTV camera registry, PostGIS spatial queries, and camera health"
+    },
+    {
+      "name": "Live Incidents & Dispatch",
+      "description": "Real-time AI incident alert detection, verification, and PCR patrol vehicle dispatch"
+    },
+    {
+      "name": "Vehicle Traversal Tracking",
+      "description": "Statewide ANPR vehicle tracking, corridor hop reconstruction, and Section 65B forensic verification"
+    },
+    {
+      "name": "Watchlists & Intelligence",
+      "description": "Integration with VAHAN stolen vehicle registry and e-GujCop criminal blacklist databases"
+    },
+    {
+      "name": "Analytics & Gap Reports",
+      "description": "Statewide 33-district surveillance density, coverage indices, and blindspot gap assessments"
+    },
+    {
+      "name": "Video Streaming Sandbox",
+      "description": "Live RTSP, HLS, and WebRTC streaming video ingestion catalog for developer testing"
+    },
+    {
+      "name": "Authentication",
+      "description": "Secure officer authentication and session token issuance"
+    }
+  ],
   "paths": {
     "/api/cameras": {
       "get": {
-        "tags": ["GIS CCTV Registry"],
+        "tags": [
+          "GIS CCTV Registry"
+        ],
         "summary": "List all registered CCTV camera nodes",
         "description": "Retrieve statewide CCTV inventory across 26 government departments with PostGIS coordinates, RTSP stream URLs, VMS vendors, codecs, and AMC health status.",
         "parameters": [
           {
             "name": "department",
             "in": "query",
-            "schema": { "type": "string" },
+            "schema": {
+              "type": "string"
+            },
             "description": "Filter by department (e.g. 'Gujarat Police', 'GSRTC', 'AMC')"
           },
           {
             "name": "district",
             "in": "query",
-            "schema": { "type": "string" },
+            "schema": {
+              "type": "string"
+            },
             "description": "Filter by district (e.g. 'Gandhinagar', 'Ahmedabad', 'Surat')"
           },
           {
             "name": "status",
             "in": "query",
-            "schema": { "type": "string", "enum": ["Online", "Degraded", "Offline"] },
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Online",
+                "Degraded",
+                "Offline"
+              ]
+            },
             "description": "Filter by operational ping status"
           },
           {
             "name": "q",
             "in": "query",
-            "schema": { "type": "string" },
+            "schema": {
+              "type": "string"
+            },
             "description": "Text search across camera ID, landmark, and junction"
           }
         ],
@@ -59,8 +108,24 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "total": { "type": "integer" },
-                    "cameras": { "type": "array", "items": { "$ref": "#/components/schemas/Camera" } }
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "total": {
+                      "type": "integer",
+                      "example": 14
+                    },
+                    "cameras": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Camera"
+                      }
+                    }
                   }
                 }
               }
@@ -69,39 +134,87 @@
         }
       },
       "post": {
-        "tags": ["GIS CCTV Registry"],
+        "tags": [
+          "GIS CCTV Registry"
+        ],
         "summary": "Onboard a new CCTV node",
         "description": "Register a new departmental camera into the centralized state inventory.",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/CameraInput" }
+              "schema": {
+                "$ref": "#/components/schemas/CameraInput"
+              }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Camera node successfully registered"
+            "description": "Camera node successfully registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Camera onboarded successfully"
+                    },
+                    "camera": {
+                      "$ref": "#/components/schemas/Camera"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/api/alerts": {
       "get": {
-        "tags": ["Live Incidents & Dispatch"],
+        "tags": [
+          "Live Incidents & Dispatch"
+        ],
         "summary": "Fetch active incident alert queue",
         "description": "Streams real-time AI alert detections matched against VAHAN and e-GujCop watchlists.",
         "parameters": [
           {
             "name": "status",
             "in": "query",
-            "schema": { "type": "string", "enum": ["NEW", "ACKNOWLEDGED", "DISPATCHED", "RESOLVED"] }
+            "schema": {
+              "type": "string",
+              "enum": [
+                "NEW",
+                "ACKNOWLEDGED",
+                "DISPATCHED",
+                "RESOLVED"
+              ]
+            },
+            "description": "Filter by alert lifecycle status"
           },
           {
-            "name": "priority",
+            "name": "severity",
             "in": "query",
-            "schema": { "type": "string", "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"] }
+            "schema": {
+              "type": "string",
+              "enum": [
+                "CRITICAL",
+                "HIGH",
+                "MEDIUM",
+                "LOW"
+              ]
+            },
+            "description": "Filter by priority severity level"
           }
         ],
         "responses": {
@@ -112,8 +225,28 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "total": { "type": "integer" },
-                    "alerts": { "type": "array", "items": { "$ref": "#/components/schemas/Alert" } }
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "total": {
+                      "type": "integer",
+                      "example": 8
+                    },
+                    "unresolvedCritical": {
+                      "type": "integer",
+                      "example": 2
+                    },
+                    "alerts": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Alert"
+                      }
+                    }
                   }
                 }
               }
@@ -122,35 +255,186 @@
         }
       },
       "post": {
-        "tags": ["Live Incidents & Dispatch"],
-        "summary": "Update incident status / Dispatch PCR patrol",
-        "description": "Acknowledge an alert or dispatch the nearest PCR patrol intercept van.",
+        "tags": [
+          "Live Incidents & Dispatch"
+        ],
+        "summary": "Report / Create a new security alert",
+        "description": "Triggers a new incident alert with vehicle or scene metadata.",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "alertId": { "type": "string" },
-                  "status": { "type": "string", "enum": ["ACKNOWLEDGED", "DISPATCHED", "RESOLVED", "FALSE_POSITIVE"] },
-                  "dispatchedUnit": { "type": "object" }
-                },
-                "required": ["alertId", "status"]
+                "$ref": "#/components/schemas/AlertInput"
               }
             }
           }
         },
         "responses": {
-          "200": { "description": "Alert status updated successfully" }
+          "201": {
+            "description": "Incident alert created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Incident alert created successfully"
+                    },
+                    "alert": {
+                      "$ref": "#/components/schemas/Alert"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Live Incidents & Dispatch"
+        ],
+        "summary": "Update incident status / Dispatch PCR patrol unit",
+        "description": "Updates alert status, assigns PCR intercept patrol, or marks an incident as resolved.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "alertId",
+                  "status"
+                ],
+                "properties": {
+                  "alertId": {
+                    "type": "string",
+                    "example": "ALT-2026-0891"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "NEW",
+                      "ACKNOWLEDGED",
+                      "DISPATCHED",
+                      "RESOLVED",
+                      "FALSE_POSITIVE"
+                    ],
+                    "example": "DISPATCHED"
+                  },
+                  "dispatchedUnit": {
+                    "type": "object",
+                    "properties": {
+                      "unitId": {
+                        "type": "string",
+                        "example": "PCR-VAN-402"
+                      },
+                      "callSign": {
+                        "type": "string",
+                        "example": "Gandhinagar Mobile Patrol 4"
+                      },
+                      "officerInCharge": {
+                        "type": "string",
+                        "example": "PSI R. K. Vaghela"
+                      },
+                      "contact": {
+                        "type": "string",
+                        "example": "+91 98250 11223"
+                      },
+                      "etaMinutes": {
+                        "type": "integer",
+                        "example": 4
+                      }
+                    }
+                  },
+                  "notes": {
+                    "type": "string",
+                    "example": "Patrol dispatched to intercept suspect near Infocity Circle."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Alert status updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Incident ALT-2026-0891 updated to DISPATCHED"
+                    },
+                    "alert": {
+                      "$ref": "#/components/schemas/Alert"
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
     "/api/vehicle/track": {
+      "get": {
+        "tags": [
+          "Vehicle Traversal Tracking"
+        ],
+        "summary": "Track vehicle route by license plate query",
+        "description": "Queries the statewide ANPR mesh to reconstruct multi-hop corridor movement with Section 65B forensic hash.",
+        "parameters": [
+          {
+            "name": "plate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "GJ-01-AB-1234"
+            },
+            "description": "Target registration plate number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vehicle trajectory checkpoints and Section 65B certificate",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleTrackResponse"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
-        "tags": ["Vehicle Traversal Tracking"],
+        "tags": [
+          "Vehicle Traversal Tracking"
+        ],
         "summary": "Reconstruct vehicle route & traversal trajectory",
-        "description": "Queries ANPR camera grid to reconstruct multi-hop corridor movement for a target license plate.",
+        "description": "Queries statewide ANPR camera grid to reconstruct multi-hop corridor movement for a target license plate.",
         "requestBody": {
           "required": true,
           "content": {
@@ -158,9 +442,14 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "plate": { "type": "string", "example": "GJ-01-AB-1234" }
+                  "plate": {
+                    "type": "string",
+                    "example": "GJ-01-AB-1234"
+                  }
                 },
-                "required": ["plate"]
+                "required": [
+                  "plate"
+                ]
               }
             }
           }
@@ -171,13 +460,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "plate": { "type": "string" },
-                    "totalSightings": { "type": "integer" },
-                    "sightings": { "type": "array", "items": { "$ref": "#/components/schemas/VehicleSighting" } },
-                    "watchlistMatch": { "type": "object" }
-                  }
+                  "$ref": "#/components/schemas/VehicleTrackResponse"
                 }
               }
             }
@@ -187,54 +470,362 @@
     },
     "/api/watchlists": {
       "get": {
-        "tags": ["Watchlists & Intelligence"],
+        "tags": [
+          "Watchlists & Intelligence"
+        ],
         "summary": "List cross-agency watchlists",
         "description": "Returns VAHAN stolen vehicle registry and e-GujCop criminal blacklist records.",
+        "parameters": [
+          {
+            "name": "source",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "VAHAN",
+                "e-GujCop"
+              ]
+            },
+            "description": "Filter by source intelligence database"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by category (e.g. 'Stolen Vehicle', 'Terrorism', 'Wanted')"
+          },
+          {
+            "name": "severity",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "CRITICAL",
+                "HIGH",
+                "MEDIUM",
+                "LOW"
+              ]
+            },
+            "description": "Filter by severity rating"
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Text search by plate, FIR number, or suspect name"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Watchlist database records"
+            "description": "Watchlist records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "total": {
+                      "type": "integer",
+                      "example": 8
+                    },
+                    "vahanCount": {
+                      "type": "integer",
+                      "example": 4
+                    },
+                    "eGujCopCount": {
+                      "type": "integer",
+                      "example": 4
+                    },
+                    "watchlists": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/WatchlistEntry"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
       "post": {
-        "tags": ["Watchlists & Intelligence"],
-        "summary": "Add vehicle to active watchlist",
+        "tags": [
+          "Watchlists & Intelligence"
+        ],
+        "summary": "Add vehicle or suspect to active watchlist",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/WatchlistInput" }
+              "schema": {
+                "$ref": "#/components/schemas/WatchlistInput"
+              }
             }
           }
         },
         "responses": {
-          "201": { "description": "Watchlist entry created" }
+          "201": {
+            "description": "Watchlist entry created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Watchlist entry created successfully"
+                    },
+                    "entry": {
+                      "$ref": "#/components/schemas/WatchlistEntry"
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
     "/api/gap-analysis": {
       "get": {
-        "tags": ["Analytics & Gap Reports"],
+        "tags": [
+          "Analytics & Gap Reports"
+        ],
         "summary": "Statewide surveillance blindspot gap analysis",
         "description": "Returns 33-district CCTV density, coverage ratios, and high-priority blindspot recommendations.",
         "responses": {
-          "200": { "description": "District coverage and gap analysis dataset" }
+          "200": {
+            "description": "District coverage and gap analysis dataset",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "statewideSummary": {
+                      "type": "object",
+                      "properties": {
+                        "totalMonitoredDistricts": {
+                          "type": "integer",
+                          "example": 7
+                        },
+                        "totalCameras": {
+                          "type": "integer",
+                          "example": 14
+                        },
+                        "overallStateCoveragePct": {
+                          "type": "number",
+                          "example": 78.4
+                        },
+                        "healthRatio": {
+                          "type": "object",
+                          "properties": {
+                            "online": {
+                              "type": "integer",
+                              "example": 10
+                            },
+                            "degraded": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "offline": {
+                              "type": "integer",
+                              "example": 2
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "districtBreakdown": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "district": {
+                            "type": "string",
+                            "example": "Gandhinagar"
+                          },
+                          "totalCameras": {
+                            "type": "integer",
+                            "example": 4
+                          },
+                          "anprCount": {
+                            "type": "integer",
+                            "example": 2
+                          },
+                          "ptzCount": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "fixedCount": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "coverageScorePct": {
+                            "type": "integer",
+                            "example": 80
+                          },
+                          "blindspotRisk": {
+                            "type": "string",
+                            "enum": [
+                              "LOW",
+                              "MODERATE",
+                              "HIGH",
+                              "CRITICAL"
+                            ],
+                            "example": "LOW"
+                          },
+                          "priorityRecommendation": {
+                            "type": "string",
+                            "example": "Deploy 12 edge ANPR speed gates at state border crossings."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
     "/api/ingest": {
       "get": {
-        "tags": ["Video Streaming Sandbox"],
+        "tags": [
+          "Video Streaming Sandbox"
+        ],
         "summary": "Live video streaming ingestion catalog",
         "description": "Returns RTSP, HLS, and WebRTC streaming endpoints for developer sandbox integration.",
         "responses": {
-          "200": { "description": "Active RTSP/HLS stream URLs" }
+          "200": {
+            "description": "Active RTSP/HLS stream URLs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "example": "RTSP / HLS / WebRTC Unified Gateway"
+                    },
+                    "environment": {
+                      "type": "string",
+                      "example": "Gujarat Police SCRB State Video Ingestion Hub"
+                    },
+                    "totalActiveFeeds": {
+                      "type": "integer",
+                      "example": 14
+                    },
+                    "streams": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "cameraId": {
+                            "type": "string",
+                            "example": "CAM-GNR-001"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Gandhinagar Police HQ Gate 1"
+                          },
+                          "department": {
+                            "type": "string",
+                            "example": "Gujarat Police"
+                          },
+                          "district": {
+                            "type": "string",
+                            "example": "Gandhinagar"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "Online"
+                          },
+                          "codec": {
+                            "type": "string",
+                            "example": "H.265"
+                          },
+                          "resolution": {
+                            "type": "string",
+                            "example": "1080p (FHD)"
+                          },
+                          "fps": {
+                            "type": "integer",
+                            "example": 30
+                          },
+                          "streamEndpoints": {
+                            "type": "object",
+                            "properties": {
+                              "rtsp": {
+                                "type": "string",
+                                "example": "rtsp://sandbox.sentinel.gujarat.gov.in:8554/cam-gnr-001"
+                              },
+                              "hls": {
+                                "type": "string",
+                                "example": "https://streams.sentinel.gujarat.gov.in/hls/cam-gnr-001/live.m3u8"
+                              },
+                              "webrtc": {
+                                "type": "string",
+                                "example": "wss://webrtc.sentinel.gujarat.gov.in/live/cam-gnr-001"
+                              },
+                              "snapshotJpeg": {
+                                "type": "string",
+                                "example": "https://sandbox.sentinel.gujarat.gov.in/api/v1/snapshot/CAM-GNR-001.jpg"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
     "/api/auth/login": {
       "post": {
-        "tags": ["Authentication"],
+        "tags": [
+          "Authentication"
+        ],
         "summary": "Officer portal authentication",
         "description": "Authenticates police credentials and issues signed session JWT tokens.",
         "requestBody": {
@@ -243,17 +834,77 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
                 "properties": {
-                  "email": { "type": "string", "example": "dgp.police@gujarat.gov.in" },
-                  "password": { "type": "string", "example": "GujaratPolice@2026" }
-                },
-                "required": ["email", "password"]
+                  "email": {
+                    "type": "string",
+                    "example": "dgp.police@gujarat.gov.in"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "GujaratPolice@2026"
+                  }
+                }
               }
             }
           }
         },
         "responses": {
-          "200": { "description": "Authenticated officer profile & JWT token" }
+          "200": {
+            "description": "Authenticated officer profile & JWT session token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...signed"
+                    },
+                    "officer": {
+                      "type": "object",
+                      "properties": {
+                        "badgeNumber": {
+                          "type": "string",
+                          "example": "GP-DGP-001"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Vikas Sahay, IPS"
+                        },
+                        "rank": {
+                          "type": "string",
+                          "example": "Director General of Police"
+                        },
+                        "jurisdiction": {
+                          "type": "string",
+                          "example": "State of Gujarat"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "SUPER_ADMIN"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials or unauthorized access"
+          }
         }
       }
     }
@@ -263,83 +914,496 @@
       "Camera": {
         "type": "object",
         "properties": {
-          "id": { "type": "string", "example": "CAM-GNR-001" },
-          "name": { "type": "string", "example": "Gandhinagar Police HQ Gate 1" },
-          "department": { "type": "string", "example": "Gujarat Police" },
-          "district": { "type": "string", "example": "Gandhinagar" },
-          "locationName": { "type": "string", "example": "Sector 10 Circle, Gandhinagar" },
-          "coordinates": { "type": "array", "items": { "type": "number" }, "example": [23.223, 72.649] },
-          "status": { "type": "string", "enum": ["Online", "Degraded", "Offline"] },
-          "cameraType": { "type": "string", "example": "ANPR" },
-          "vendor": { "type": "string", "example": "Hikvision ANPR Pro" },
-          "vmsVendor": { "type": "string", "example": "Hikvision" },
-          "resolution": { "type": "string", "example": "1080p (FHD)" },
-          "fps": { "type": "integer", "example": 30 },
-          "codec": { "type": "string", "example": "H.265" },
-          "storageDays": { "type": "integer", "example": 30 },
-          "storageType": { "type": "string", "example": "Hybrid SAN" },
-          "rtspUrl": { "type": "string", "example": "rtsp://sandbox.sentinel.gujarat.gov.in:8554/cam-gnr-001" },
-          "hlsUrl": { "type": "string", "example": "https://streams.sentinel.gujarat.gov.in/hls/cam-gnr-001/index.m3u8" },
-          "ipAddress": { "type": "string", "example": "10.18.4.12" },
-          "amcActive": { "type": "boolean", "example": true },
-          "pingMs": { "type": "integer", "example": 14 }
+          "id": {
+            "type": "string",
+            "example": "CAM-GNR-001"
+          },
+          "name": {
+            "type": "string",
+            "example": "Gandhinagar Police HQ Gate 1"
+          },
+          "department": {
+            "type": "string",
+            "example": "Gujarat Police"
+          },
+          "district": {
+            "type": "string",
+            "example": "Gandhinagar"
+          },
+          "locationName": {
+            "type": "string",
+            "example": "Sector 10 Circle, Gandhinagar"
+          },
+          "coordinates": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "example": [
+              23.223,
+              72.649
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Online",
+              "Degraded",
+              "Offline"
+            ],
+            "example": "Online"
+          },
+          "cameraType": {
+            "type": "string",
+            "example": "ANPR"
+          },
+          "vendor": {
+            "type": "string",
+            "example": "Hikvision ANPR Pro"
+          },
+          "vmsVendor": {
+            "type": "string",
+            "example": "Hikvision"
+          },
+          "resolution": {
+            "type": "string",
+            "example": "1080p (FHD)"
+          },
+          "fps": {
+            "type": "integer",
+            "example": 30
+          },
+          "codec": {
+            "type": "string",
+            "example": "H.265"
+          },
+          "storageDays": {
+            "type": "integer",
+            "example": 30
+          },
+          "storageType": {
+            "type": "string",
+            "example": "Hybrid SAN"
+          },
+          "rtspUrl": {
+            "type": "string",
+            "example": "rtsp://sandbox.sentinel.gujarat.gov.in:8554/cam-gnr-001"
+          },
+          "hlsUrl": {
+            "type": "string",
+            "example": "https://streams.sentinel.gujarat.gov.in/hls/cam-gnr-001/index.m3u8"
+          },
+          "ipAddress": {
+            "type": "string",
+            "example": "10.18.4.12"
+          },
+          "amcActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "pingMs": {
+            "type": "integer",
+            "example": 14
+          }
         }
       },
       "CameraInput": {
         "type": "object",
-        "required": ["name", "department", "district", "locationName", "coordinates"],
+        "required": [
+          "name",
+          "department",
+          "district",
+          "locationName",
+          "coordinates"
+        ],
         "properties": {
-          "name": { "type": "string" },
-          "department": { "type": "string" },
-          "district": { "type": "string" },
-          "locationName": { "type": "string" },
-          "coordinates": { "type": "array", "items": { "type": "number" } },
-          "cameraType": { "type": "string" },
-          "rtspUrl": { "type": "string" },
-          "storageDays": { "type": "integer" }
+          "name": {
+            "type": "string",
+            "example": "SG Highway Thaltej Cross Road"
+          },
+          "department": {
+            "type": "string",
+            "example": "AMC"
+          },
+          "district": {
+            "type": "string",
+            "example": "Ahmedabad"
+          },
+          "locationName": {
+            "type": "string",
+            "example": "Thaltej Cross Road, SG Highway"
+          },
+          "coordinates": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "example": [
+              23.051,
+              72.508
+            ]
+          },
+          "cameraType": {
+            "type": "string",
+            "example": "PTZ Speed Dome"
+          },
+          "vendor": {
+            "type": "string",
+            "example": "Dahua WizSense"
+          },
+          "vmsVendor": {
+            "type": "string",
+            "example": "Milestone"
+          },
+          "rtspUrl": {
+            "type": "string",
+            "example": "rtsp://10.20.12.44:554/live/ch0"
+          },
+          "storageDays": {
+            "type": "integer",
+            "example": 45
+          }
         }
       },
       "Alert": {
         "type": "object",
         "properties": {
-          "id": { "type": "string", "example": "ALT-2026-0891" },
-          "timestamp": { "type": "string", "format": "date-time" },
-          "cameraId": { "type": "string" },
-          "cameraName": { "type": "string" },
-          "registrationNumber": { "type": "string", "example": "GJ-01-AB-1234" },
-          "locationName": { "type": "string" },
-          "coordinates": { "type": "array", "items": { "type": "number" } },
-          "status": { "type": "string", "enum": ["NEW", "ACKNOWLEDGED", "DISPATCHED", "RESOLVED"] },
-          "dispatchedUnit": { "type": "object" }
+          "id": {
+            "type": "string",
+            "example": "ALT-2026-0891"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "cameraId": {
+            "type": "string",
+            "example": "CAM-GNR-001"
+          },
+          "cameraName": {
+            "type": "string",
+            "example": "Gandhinagar Police HQ Gate 1"
+          },
+          "registrationNumber": {
+            "type": "string",
+            "example": "GJ-01-AB-1234"
+          },
+          "locationName": {
+            "type": "string",
+            "example": "Sector 10 Circle, Gandhinagar"
+          },
+          "district": {
+            "type": "string",
+            "example": "Gandhinagar"
+          },
+          "coordinates": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "example": [
+              23.223,
+              72.649
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "NEW",
+              "ACKNOWLEDGED",
+              "DISPATCHED",
+              "RESOLVED"
+            ],
+            "example": "DISPATCHED"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "CRITICAL",
+              "HIGH",
+              "MEDIUM",
+              "LOW"
+            ],
+            "example": "CRITICAL"
+          },
+          "alertType": {
+            "type": "string",
+            "example": "STOLEN_VEHICLE"
+          },
+          "confidence": {
+            "type": "number",
+            "example": 0.984
+          },
+          "matchedWatchlist": {
+            "type": "string",
+            "example": "VAHAN National Stolen Database"
+          },
+          "dispatchedUnit": {
+            "type": "object"
+          }
+        }
+      },
+      "AlertInput": {
+        "type": "object",
+        "required": [
+          "cameraId",
+          "registrationNumber",
+          "alertType"
+        ],
+        "properties": {
+          "cameraId": {
+            "type": "string",
+            "example": "CAM-GNR-001"
+          },
+          "registrationNumber": {
+            "type": "string",
+            "example": "GJ-01-AB-1234"
+          },
+          "alertType": {
+            "type": "string",
+            "example": "STOLEN_VEHICLE"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "CRITICAL",
+              "HIGH",
+              "MEDIUM",
+              "LOW"
+            ],
+            "example": "CRITICAL"
+          },
+          "notes": {
+            "type": "string",
+            "example": "Vehicle flagged by highway ANPR unit"
+          }
+        }
+      },
+      "VehicleTrackResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "plate": {
+            "type": "string",
+            "example": "GJ-01-AB-1234"
+          },
+          "totalSightings": {
+            "type": "integer",
+            "example": 5
+          },
+          "watchlistMatch": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "WL-001"
+              },
+              "identifier": {
+                "type": "string",
+                "example": "GJ-01-AB-1234"
+              },
+              "category": {
+                "type": "string",
+                "example": "Stolen Vehicle"
+              },
+              "source": {
+                "type": "string",
+                "example": "VAHAN"
+              },
+              "severity": {
+                "type": "string",
+                "example": "CRITICAL"
+              }
+            }
+          },
+          "sightings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VehicleSighting"
+            }
+          },
+          "forensicCertificate": {
+            "type": "object",
+            "properties": {
+              "section65BCompliant": {
+                "type": "boolean",
+                "example": true
+              },
+              "ledgerHash": {
+                "type": "string",
+                "example": "9f83a...sha256"
+              },
+              "jurisdiction": {
+                "type": "string",
+                "example": "High Court of Gujarat / Indian Evidence Act"
+              }
+            }
+          }
         }
       },
       "VehicleSighting": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "cameraId": { "type": "string" },
-          "cameraName": { "type": "string" },
-          "timestamp": { "type": "string", "format": "date-time" },
-          "locationName": { "type": "string" },
-          "district": { "type": "string" },
-          "coordinates": { "type": "array", "items": { "type": "number" } },
-          "speedKmh": { "type": "integer" },
-          "confidence": { "type": "number", "example": 0.984 },
-          "heading": { "type": "string", "example": "South-West towards Surat" },
-          "ptsMs": { "type": "integer" },
-          "sha256Hash": { "type": "string" }
+          "id": {
+            "type": "string",
+            "example": "SIG-401"
+          },
+          "cameraId": {
+            "type": "string",
+            "example": "CAM-GNR-001"
+          },
+          "cameraName": {
+            "type": "string",
+            "example": "Gandhinagar Police HQ Gate 1"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "locationName": {
+            "type": "string",
+            "example": "Sector 10 Circle, Gandhinagar"
+          },
+          "district": {
+            "type": "string",
+            "example": "Gandhinagar"
+          },
+          "coordinates": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "example": [
+              23.223,
+              72.649
+            ]
+          },
+          "speedKmh": {
+            "type": "integer",
+            "example": 54
+          },
+          "confidence": {
+            "type": "number",
+            "example": 0.984
+          },
+          "heading": {
+            "type": "string",
+            "example": "South-West towards Surat"
+          },
+          "ptsMs": {
+            "type": "integer",
+            "example": 171800200
+          },
+          "sha256Hash": {
+            "type": "string",
+            "example": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      "WatchlistEntry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "WL-001"
+          },
+          "identifier": {
+            "type": "string",
+            "example": "GJ-01-AB-1234"
+          },
+          "category": {
+            "type": "string",
+            "example": "Stolen Vehicle"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "VAHAN",
+              "e-GujCop"
+            ],
+            "example": "VAHAN"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "CRITICAL",
+              "HIGH",
+              "MEDIUM",
+              "LOW"
+            ],
+            "example": "CRITICAL"
+          },
+          "details": {
+            "type": "string",
+            "example": "White Hyundai Creta reported stolen from Vastrapur PS"
+          },
+          "firNumber": {
+            "type": "string",
+            "example": "FIR-2026/0412"
+          },
+          "policeStation": {
+            "type": "string",
+            "example": "Vastrapur PS, Ahmedabad"
+          },
+          "addedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "WatchlistInput": {
         "type": "object",
-        "required": ["identifier", "category", "source"],
+        "required": [
+          "identifier",
+          "category",
+          "source"
+        ],
         "properties": {
-          "identifier": { "type": "string", "example": "GJ-01-AB-1234" },
-          "category": { "type": "string", "example": "Stolen Vehicle" },
-          "source": { "type": "string", "example": "VAHAN" },
-          "details": { "type": "string" },
-          "firNumber": { "type": "string" },
-          "policeStation": { "type": "string" }
+          "identifier": {
+            "type": "string",
+            "example": "GJ-05-CD-9988"
+          },
+          "category": {
+            "type": "string",
+            "example": "Stolen Vehicle"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "VAHAN",
+              "e-GujCop"
+            ],
+            "example": "VAHAN"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "CRITICAL",
+              "HIGH",
+              "MEDIUM",
+              "LOW"
+            ],
+            "example": "HIGH"
+          },
+          "details": {
+            "type": "string",
+            "example": "Black Scorpio wanted in connection with highway robbery."
+          },
+          "firNumber": {
+            "type": "string",
+            "example": "FIR-2026/0882"
+          },
+          "policeStation": {
+            "type": "string",
+            "example": "Adajan PS, Surat"
+          }
         }
       }
     }

@@ -89,6 +89,7 @@ export interface VehicleSighting {
   color: string;
   plateCropUrl?: string;
   sceneCropUrl?: string;
+  sha256Hash?: string;
   watchlistMatch?: WatchlistEntry;
 }
 

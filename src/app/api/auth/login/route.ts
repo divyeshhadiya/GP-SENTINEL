@@ -1,57 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
+import { authService } from "@/server/services/authService";
+import { apiError } from "@/server/utils/response";
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, password } = await req.json();
-
-    if (!email || !password) {
-      return NextResponse.json(
-        { error: "Email and password are required" },
-        { status: 400 }
-      );
-    }
-
-    let role = "DGP";
-    let name = "Dr. Vikas Sahay, IPS";
-    let badgeId = "GP-DGP-01";
-    let rank = "Director General of Police (DGP)";
-    let department = "State Crime Record Bureau (SCRB), Gandhinagar";
-
-    if (email.includes("sp.command")) {
-      role = "SP_COMMAND";
-      name = "Smt. Shweta Shrimali, IPS";
-      badgeId = "GP-SP-04";
-      rank = "Superintendent of Police (Command & Control)";
-      department = "Gujarat State Police Control Room, Gandhinagar";
-    } else if (email.includes("traffic.pi")) {
-      role = "TRAFFIC_PI";
-      name = "Inspector R. K. Vala";
-      badgeId = "GP-PI-114";
-      rank = "Police Inspector (Traffic & Highway Patrol)";
-      department = "Ahmedabad City Traffic Police (Netram)";
-    }
-
-    const user = {
-      id: `OFFICER-${Date.now().toString().slice(-4)}`,
-      name,
-      badgeId,
-      rank,
-      department,
-      role,
-      email
-    };
+    const body = await req.json();
+    const result = await authService.authenticate(body.email, body.password);
 
     return NextResponse.json({
-      status: "SUCCESS",
+      success: true,
+      timestamp: new Date().toISOString(),
       message: "Officer verified successfully",
-      access_token: `gp_sentinel_jwt_${Buffer.from(email).toString("base64")}`,
-      token_type: "bearer",
-      user
+      access_token: result.accessToken,
+      token_type: result.tokenType,
+      expires_in: result.expiresInSeconds,
+      user: result.officer
     });
-  } catch (err: any) {
-    return NextResponse.json(
-      { error: "Invalid login payload", details: err.message },
-      { status: 500 }
-    );
+  } catch (err) {
+    return apiError(err);
   }
 }
