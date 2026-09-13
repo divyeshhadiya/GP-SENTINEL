@@ -61,17 +61,21 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<UserProfile | null>(null);
-  const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [user, setUser] = useState<UserProfile | null>(defaultAdminUser);
+  const [isAuthLoading, setIsAuthLoading] = useState(false);
 
   useEffect(() => {
     try {
       const saved = localStorage.getItem("sentinel_user");
       if (saved) {
         setUser(JSON.parse(saved));
+      } else {
+        setUser(defaultAdminUser);
+        localStorage.setItem("sentinel_user", JSON.stringify(defaultAdminUser));
       }
     } catch (e) {
       console.warn("Failed to parse saved session", e);
+      setUser(defaultAdminUser);
     } finally {
       setIsAuthLoading(false);
     }
