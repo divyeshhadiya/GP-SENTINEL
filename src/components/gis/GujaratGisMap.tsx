@@ -254,25 +254,25 @@ export default function GujaratGisMap({
   return (
     <div className="relative w-full rounded-xl overflow-hidden border border-slate-300 dark:border-police-700/80 shadow-2xl bg-white dark:bg-police-900">
       {/* Tactical Top Overlay */}
-      <div className="absolute top-3 left-3 z-[1000] bg-white/90 dark:bg-police-900/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-300 dark:border-police-700 text-xs flex items-center space-x-2 text-slate-800 dark:text-slate-300 shadow-lg">
-        <Shield className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-        <span className="font-bold text-slate-900 dark:text-white">Gujarat Police GIS Grid</span>
-        <span className="text-slate-400">|</span>
-        <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">{cameras.length} Nodes</span>
+      <div className="absolute top-2.5 left-2.5 z-[1000] bg-white/90 dark:bg-police-900/90 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-slate-300 dark:border-police-700 text-[11px] sm:text-xs flex items-center space-x-1.5 sm:space-x-2 text-slate-800 dark:text-slate-300 shadow-lg">
+        <Shield className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
+        <span className="font-bold text-slate-900 dark:text-white truncate max-w-[140px] sm:max-w-none">GIS Grid</span>
+        <span className="text-slate-400 hidden sm:inline">|</span>
+        <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold text-[10px] sm:text-xs">{cameras.length} Nodes</span>
       </div>
 
       {/* Map Type Switcher matching reference image (Top Right) */}
       <MapTypeSelector
         currentType={mapType}
         onChange={(t) => setMapType(t)}
-        className="absolute top-3 right-3"
+        className="absolute top-2.5 right-2.5 scale-90 sm:scale-100 origin-top-right"
       />
 
       {/* Map Canvas */}
-      <div ref={mapContainerRef} style={{ height }} className="w-full z-0" />
+      <div ref={mapContainerRef} style={{ height }} className="w-full z-0 min-h-[340px]" />
 
       {/* Legend at Bottom Right */}
-      <div className="absolute bottom-3 right-3 z-[1000] bg-white/90 dark:bg-police-900/90 backdrop-blur-md p-2.5 rounded-lg border border-slate-300 dark:border-police-700 text-[11px] text-slate-700 dark:text-slate-300 space-y-1 shadow-lg max-w-[210px]">
+      <div className="hidden sm:block absolute bottom-3 right-3 z-[1000] bg-white/90 dark:bg-police-900/90 backdrop-blur-md p-2.5 rounded-lg border border-slate-300 dark:border-police-700 text-[11px] text-slate-700 dark:text-slate-300 space-y-1 shadow-lg max-w-[210px]">
         <div className="font-bold text-slate-900 dark:text-slate-200 border-b border-slate-200 dark:border-police-800 pb-1 mb-1">
           Department Layers
         </div>

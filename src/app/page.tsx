@@ -77,20 +77,20 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full lg:w-auto shrink-0">
             <Link
               href="/vehicle-tracking"
-              className="flex items-center space-x-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-all shadow-md"
+              className="flex items-center justify-center space-x-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-all shadow-md text-center"
             >
-              <Navigation className="w-4 h-4" />
-              <span>Launch Vehicle Tracker (Test Scenario)</span>
+              <Navigation className="w-4 h-4 shrink-0" />
+              <span>Launch Vehicle Tracker</span>
             </Link>
 
             <Link
               href="/video-wall"
-              className="flex items-center space-x-1.5 px-3.5 py-2.5 bg-slate-100 dark:bg-police-800 hover:bg-slate-200 dark:hover:bg-police-750 text-slate-800 dark:text-slate-200 rounded-xl text-xs font-semibold border border-slate-300 dark:border-police-700 transition-all"
+              className="flex items-center justify-center space-x-1.5 px-3.5 py-2.5 bg-slate-100 dark:bg-police-800 hover:bg-slate-200 dark:hover:bg-police-750 text-slate-800 dark:text-slate-200 rounded-xl text-xs font-semibold border border-slate-300 dark:border-police-700 transition-all text-center"
             >
-              <Video className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <Video className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Video Wall</span>
             </Link>
           </div>
@@ -98,7 +98,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Statewide Mission-Critical Key Metrics */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3.5">
         <div className="bg-white dark:bg-police-900 border border-slate-200 dark:border-police-800 rounded-xl p-4 shadow-lg transition-all">
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-mono">
             <span>Onboarded Cameras</span>

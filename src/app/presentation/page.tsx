@@ -838,11 +838,11 @@ export default function PresentationPage() {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center gap-2">
           <a
             href="/assets/GP-SENTINEL_Official_Pitch_Deck.pptx"
             download="GP-SENTINEL_Official_Pitch_Deck.pptx"
-            className="flex items-center space-x-1.5 px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-lg text-xs transition-all shadow-md"
+            className="flex items-center justify-center space-x-1.5 px-3 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-lg text-xs transition-all shadow-md flex-1 sm:flex-initial min-h-[36px]"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Download .PPTX</span>
@@ -850,7 +850,7 @@ export default function PresentationPage() {
 
           <Link
             href="/video-demo"
-            className="flex items-center space-x-1.5 px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-lg text-xs transition-all shadow-md"
+            className="flex items-center justify-center space-x-1.5 px-3 py-2 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-lg text-xs transition-all shadow-md flex-1 sm:flex-initial min-h-[36px]"
           >
             <Video className="w-3.5 h-3.5" />
             <span>Video Demo</span>
@@ -858,7 +858,7 @@ export default function PresentationPage() {
 
           <button
             onClick={() => setShowNotes(!showNotes)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+            className={`px-3 py-2 rounded-lg text-xs font-semibold transition-all border min-h-[36px] ${
               showNotes
                 ? "bg-sky-500 text-white border-sky-400"
                 : "bg-white/10 text-slate-200 border-white/15 hover:bg-white/20"
@@ -870,7 +870,7 @@ export default function PresentationPage() {
 
           <button
             onClick={toggleFullscreen}
-            className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200 border border-white/15 transition-all"
+            className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200 border border-white/15 transition-all min-h-[36px] min-w-[36px] flex items-center justify-center"
             title="Toggle Fullscreen"
           >
             {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
@@ -879,9 +879,9 @@ export default function PresentationPage() {
       </div>
 
       {/* Main Slide Card */}
-      <div className="relative rounded-2xl bg-[#001b38] border border-sky-500/30 text-white shadow-2xl overflow-hidden min-h-[560px] flex flex-col justify-between">
+      <div className="relative rounded-2xl bg-[#001b38] border border-sky-500/30 text-white shadow-2xl overflow-hidden min-h-[520px] flex flex-col justify-between">
         {/* Slide Header */}
-        <div className="p-6 pb-2 border-b border-white/10 flex items-center justify-between">
+        <div className="p-4 sm:p-6 pb-2 border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
           <div>
             <span className="text-[11px] font-mono uppercase font-bold text-amber-400 tracking-wider">
               {slide.category}
@@ -901,7 +901,7 @@ export default function PresentationPage() {
         </div>
 
         {/* Slide Body */}
-        <div className="p-6 flex-1 flex flex-col justify-center">
+        <div className="p-4 sm:p-6 flex-1 flex flex-col justify-center overflow-x-auto">
           {slide.renderContent()}
         </div>
 
@@ -919,11 +919,11 @@ export default function PresentationPage() {
         )}
 
         {/* Slide Navigation Footer */}
-        <div className="p-4 bg-[#001428] border-t border-white/10 flex items-center justify-between">
+        <div className="p-3 sm:p-4 bg-[#001428] border-t border-white/10 flex items-center justify-between gap-2">
           <button
             onClick={handlePrev}
             disabled={currentSlide === 0}
-            className="flex items-center space-x-1 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold text-white transition-all cursor-pointer"
+            className="flex items-center space-x-1 px-3 sm:px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold text-white transition-all cursor-pointer min-h-[38px]"
           >
             <ChevronLeft className="w-4 h-4" />
             <span>Previous</span>
@@ -948,7 +948,7 @@ export default function PresentationPage() {
           <button
             onClick={handleNext}
             disabled={currentSlide === slides.length - 1}
-            className="flex items-center space-x-1 px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold text-white transition-all cursor-pointer"
+            className="flex items-center space-x-1 px-3 sm:px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold text-white transition-all cursor-pointer min-h-[38px]"
           >
             <span>Next Slide</span>
             <ChevronRight className="w-4 h-4" />

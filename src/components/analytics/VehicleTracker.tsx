@@ -86,20 +86,20 @@ export default function VehicleTracker() {
           </div>
 
           {/* Search Bar */}
-          <div className="flex items-center space-x-2">
-            <div className="relative">
+          <div className="flex items-center space-x-2 w-full sm:w-auto">
+            <div className="relative flex-1 sm:flex-initial">
               <input
                 type="text"
                 value={searchPlate}
                 onChange={(e) => setSearchPlate(e.target.value)}
                 placeholder="e.g. GJ-01-AB-1234"
-                className="bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-600 rounded-lg px-3.5 py-2 text-sm text-slate-900 dark:text-white font-mono uppercase tracking-wider focus:outline-none focus:border-blue-500 w-48 sm:w-56"
+                className="bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-600 rounded-lg px-3.5 py-2 text-sm text-slate-900 dark:text-white font-mono uppercase tracking-wider focus:outline-none focus:border-blue-500 w-full sm:w-56"
                 onKeyDown={(e) => e.key === "Enter" && handleSearch(searchPlate)}
               />
             </div>
             <button
               onClick={() => handleSearch(searchPlate)}
-              className="flex items-center space-x-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-all shadow-md"
+              className="flex items-center justify-center space-x-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-all shadow-md shrink-0 min-h-[38px]"
             >
               <Search className="w-4 h-4" />
               <span>Trace Vehicle</span>
@@ -115,7 +115,7 @@ export default function VehicleTracker() {
               setSearchPlate("GJ-01-AB-1234");
               handleSearch("GJ-01-AB-1234");
             }}
-            className="px-2.5 py-1 rounded bg-red-50 dark:bg-red-950/60 border border-red-300 dark:border-red-500/60 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900 font-mono text-xs flex items-center space-x-1.5"
+            className="px-2.5 py-1.5 rounded bg-red-50 dark:bg-red-950/60 border border-red-300 dark:border-red-500/60 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900 font-mono text-xs flex items-center space-x-1.5"
           >
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
             <span>GJ-01-AB-1234 (VAHAN Stolen Creta)</span>
@@ -126,7 +126,7 @@ export default function VehicleTracker() {
               setSearchPlate("GJ-05-CD-5678");
               handleSearch("GJ-05-CD-5678");
             }}
-            className="px-2.5 py-1 rounded bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-500/60 text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900 font-mono text-xs flex items-center space-x-1.5"
+            className="px-2.5 py-1.5 rounded bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-500/60 text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900 font-mono text-xs flex items-center space-x-1.5"
           >
             <span className="w-2 h-2 rounded-full bg-amber-500"></span>
             <span>GJ-05-CD-5678 (Surat RTO Blacklisted)</span>
@@ -137,7 +137,7 @@ export default function VehicleTracker() {
               setSearchPlate("GJ-27-XY-9012");
               handleSearch("GJ-27-XY-9012");
             }}
-            className="px-2.5 py-1 rounded bg-purple-50 dark:bg-purple-950/60 border border-purple-300 dark:border-purple-500/60 text-purple-800 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900 font-mono text-xs flex items-center space-x-1.5"
+            className="px-2.5 py-1.5 rounded bg-purple-50 dark:bg-purple-950/60 border border-purple-300 dark:border-purple-500/60 text-purple-800 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900 font-mono text-xs flex items-center space-x-1.5"
           >
             <span className="w-2 h-2 rounded-full bg-purple-500"></span>
             <span>GJ-27-XY-9012 (Bhilad Contraband Transit)</span>
@@ -157,7 +157,7 @@ export default function VehicleTracker() {
                 <ShieldAlert className="w-6 h-6 text-red-600 dark:text-red-400 animate-pulse" />
               </div>
               <div>
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <h3 className="text-base font-extrabold text-red-900 dark:text-white">
                     {currentMatch.source} ALERT: {currentMatch.category.toUpperCase()}
                   </h3>
@@ -174,14 +174,14 @@ export default function VehicleTracker() {
               </div>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 w-full md:w-auto">
               <button
                 onClick={() => {
                   setIsDispatched(true);
                   alertAudio.playNotificationPing();
                 }}
                 disabled={isDispatched}
-                className={`flex items-center space-x-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-lg ${
+                className={`flex items-center justify-center space-x-1.5 px-4 py-2.5 rounded-lg text-xs font-bold transition-all shadow-lg w-full md:w-auto ${
                   isDispatched
                     ? "bg-emerald-700 text-white cursor-default"
                     : "bg-red-600 hover:bg-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.5)]"
@@ -196,7 +196,7 @@ export default function VehicleTracker() {
       )}
 
       {/* Trajectory Summary Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <div className="bg-white dark:bg-police-900 border border-slate-200 dark:border-police-800 rounded-xl p-3 shadow-lg">
           <span className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">Total Camera Detections</span>
           <div className="text-xl font-extrabold text-blue-600 dark:text-blue-400 font-mono mt-0.5">
@@ -236,26 +236,26 @@ export default function VehicleTracker() {
 
       {/* Tabs & View Controls */}
       <div className="flex flex-wrap items-center justify-between border-b border-slate-200 dark:border-police-800 pb-2 gap-2">
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <button
             onClick={() => setActiveTab("MAP")}
-            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex-1 sm:flex-initial text-center min-h-[36px] ${
               activeTab === "MAP"
                 ? "bg-blue-600 text-white shadow-md"
                 : "bg-slate-200 dark:bg-police-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
-            Interactive GIS Trajectory Map
+            Interactive GIS Map
           </button>
           <button
             onClick={() => setActiveTab("TIMELINE")}
-            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex-1 sm:flex-initial text-center min-h-[36px] ${
               activeTab === "TIMELINE"
                 ? "bg-blue-600 text-white shadow-md"
                 : "bg-slate-200 dark:bg-police-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
-            Forensic Chronological Timeline
+            Chronological Timeline
           </button>
         </div>
 
@@ -263,10 +263,10 @@ export default function VehicleTracker() {
         <button
           type="button"
           onClick={() => setShowDossierModal(true)}
-          className="flex items-center space-x-2 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold shadow-md transition-all"
+          className="flex items-center justify-center space-x-2 px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold shadow-md transition-all w-full sm:w-auto min-h-[36px]"
         >
           <FileText className="w-3.5 h-3.5" />
-          <span>Export Evidentiary Dossier (PDF / Download)</span>
+          <span>Export Evidentiary Dossier (PDF)</span>
         </button>
       </div>
 

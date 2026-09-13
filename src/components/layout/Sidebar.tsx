@@ -113,12 +113,17 @@ const navItems: NavItem[] = [
   }
 ];
 
+import { useNav } from "@/context/NavContext";
+import PoliceLogo from "@/components/common/PoliceLogo";
+import { X } from "lucide-react";
+
 export default function Sidebar() {
   const pathname = usePathname();
   const { user, isAuthenticated } = useAuth();
+  const { isMobileNavOpen, closeMobileNav } = useNav();
 
-  return (
-    <aside className="w-64 bg-white/95 dark:bg-police-900/95 border-r border-slate-200 dark:border-police-800 flex flex-col h-[calc(100vh-80px)] sticky top-[80px] shrink-0 transition-colors">
+  const renderNavList = (isMobile = false) => (
+    <>
       <div className="p-3 text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-police-850 flex items-center justify-between">
         <span>Command Modules</span>
         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
@@ -132,16 +137,21 @@ export default function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={() => {
+                if (isMobile) closeMobileNav();
+              }}
               className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium transition-all group ${
                 isActive
-                  ? "bg-blue-50 dark:bg-police-accent/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-police-accent/40 shadow-sm"
+                  ? "bg-blue-50 dark:bg-police-accent/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-police-accent/40 shadow-sm font-semibold"
                   : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-police-800/60 border border-transparent"
               }`}
             >
               <div className="flex items-center space-x-2.5 truncate">
                 <Icon
                   className={`w-4 h-4 shrink-0 transition-colors ${
-                    isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300"
+                    isActive
+                      ? "text-blue-600 dark:text-blue-400"
+                      : "text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300"
                   }`}
                 />
                 <span className="truncate">{item.name}</span>
@@ -167,6 +177,9 @@ export default function Sidebar() {
         {isAuthenticated && (
           <Link
             href="/logout"
+            onClick={() => {
+              if (isMobile) closeMobileNav();
+            }}
             className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium transition-all group ${
               pathname === "/logout"
                 ? "bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/50 shadow-sm"
@@ -203,12 +216,18 @@ export default function Sidebar() {
           <div className="flex items-center space-x-1 pt-1 border-t border-blue-100 dark:border-police-700/50 text-[11px]">
             <Link
               href="/login"
+              onClick={() => {
+                if (isMobile) closeMobileNav();
+              }}
               className="flex-1 text-center py-1 rounded bg-white dark:bg-police-700 border border-slate-200 dark:border-police-600 text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-50 text-[10px]"
             >
               Switch Role
             </Link>
             <Link
               href="/logout"
+              onClick={() => {
+                if (isMobile) closeMobileNav();
+              }}
               className="flex-1 text-center py-1 rounded bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 font-bold hover:bg-red-100 text-[10px] flex items-center justify-center space-x-1"
             >
               <LogOut className="w-2.5 h-2.5" />
@@ -224,6 +243,9 @@ export default function Sidebar() {
           </div>
           <Link
             href="/login"
+            onClick={() => {
+              if (isMobile) closeMobileNav();
+            }}
             className="px-2.5 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded text-[11px] font-bold shadow-sm"
           >
             Sign In
@@ -242,6 +264,55 @@ export default function Sidebar() {
           <span className="font-mono">TLS 1.3 / mTLS</span>
         </div>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop Fixed Sidebar (Preserved exactly as-is for lg+ screens) */}
+      <aside className="hidden lg:flex flex-col w-64 bg-white/95 dark:bg-police-900/95 border-r border-slate-200 dark:border-police-800 h-[calc(100vh-80px)] sticky top-[80px] shrink-0 transition-colors">
+        {renderNavList(false)}
+      </aside>
+
+      {/* Mobile/Tablet Off-Canvas Slide-Over Drawer */}
+      {isMobileNavOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden flex">
+          {/* Backdrop Blur Overlay */}
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+            onClick={closeMobileNav}
+            aria-hidden="true"
+          />
+
+          {/* Slide-over Drawer Panel */}
+          <div className="relative flex flex-col w-72 max-w-[85vw] bg-white dark:bg-police-900 border-r border-slate-200 dark:border-police-800 shadow-2xl z-10 h-full animate-in slide-in-from-left duration-200">
+            {/* Drawer Header with Police Logo & Close Button */}
+            <div className="p-3.5 bg-slate-100 dark:bg-police-850 border-b border-slate-200 dark:border-police-800 flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <PoliceLogo size={28} />
+                <div>
+                  <span className="text-xs font-black tracking-wider text-slate-900 dark:text-white uppercase block">
+                    GP-SENTINEL
+                  </span>
+                  <span className="text-[9px] text-slate-500 dark:text-slate-400 block font-mono">
+                    State Command Drawer
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={closeMobileNav}
+                aria-label="Close navigation menu"
+                className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-police-750 transition-all cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Nav content */}
+            {renderNavList(true)}
+          </div>
+        </div>
+      )}
+    </>
   );
 }

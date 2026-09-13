@@ -11,7 +11,7 @@ export default function VideoWallPage() {
       {/* Page Header */}
       <div className="bg-white dark:bg-police-900 border border-slate-200 dark:border-police-800 rounded-xl p-4 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors">
         <div>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-wrap items-center gap-1.5">
             <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30 font-bold">
               Model 2: Unified Video Viewing & Analytics
             </span>
@@ -27,13 +27,13 @@ export default function VideoWallPage() {
           </p>
         </div>
 
-        <div className="flex items-center space-x-3 text-xs font-mono">
-          <div className="bg-slate-100 dark:bg-police-850 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-police-800 flex items-center space-x-2 text-slate-700 dark:text-slate-300">
+        <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
+          <div className="bg-slate-100 dark:bg-police-850 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-police-800 flex items-center space-x-2 text-slate-700 dark:text-slate-300 flex-1 sm:flex-initial">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span>Live Feeds:</span>
             <span className="text-emerald-600 dark:text-emerald-400 font-bold">50 Active</span>
           </div>
-          <div className="bg-slate-100 dark:bg-police-850 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-police-800 flex items-center space-x-2 text-slate-700 dark:text-slate-300">
+          <div className="bg-slate-100 dark:bg-police-850 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-police-800 flex items-center space-x-2 text-slate-700 dark:text-slate-300 flex-1 sm:flex-initial">
             <Cpu className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>Inference:</span>
             <span className="text-blue-600 dark:text-blue-400 font-bold">YOLOv10 + ANPR</span>

@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { NavProvider } from "@/context/NavContext";
 
 export const metadata: Metadata = {
   title: "Gujarat Police SENTINEL | Integrated Video Intelligence Platform",
@@ -41,13 +42,15 @@ export default function RootLayout({
       <body className="bg-slate-50 dark:bg-police-900 text-slate-900 dark:text-slate-200 min-h-screen flex flex-col antialiased">
         <ThemeProvider>
           <AuthProvider>
-            <Header />
-            <div className="flex flex-1 overflow-hidden">
-              <Sidebar />
-              <main className="flex-1 overflow-y-auto bg-slate-100/60 dark:bg-slate-950/60 p-4 md:p-6">
-                {children}
-              </main>
-            </div>
+            <NavProvider>
+              <Header />
+              <div className="flex flex-1 overflow-hidden">
+                <Sidebar />
+                <main className="flex-1 overflow-y-auto bg-slate-100/60 dark:bg-slate-950/60 p-3 sm:p-4 md:p-6 transition-all">
+                  {children}
+                </main>
+              </div>
+            </NavProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

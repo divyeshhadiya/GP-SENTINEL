@@ -165,24 +165,24 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center p-3 sm:p-6">
+    <div className="min-h-[85vh] flex items-center justify-center p-2 sm:p-5 md:p-8">
       <div className="max-w-4xl w-full bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 grid grid-cols-1 md:grid-cols-12 transition-all relative">
         
         {/* Left Column: Official Gujarat Police Portal Sidebar (Pixel-Matched to Reference) */}
-        <div className="md:col-span-5 bg-[#002347] text-white p-7 sm:p-9 flex flex-col justify-between relative overflow-hidden">
-          <div className="relative z-10 space-y-6">
+        <div className="md:col-span-5 bg-[#002347] text-white p-5 sm:p-7 md:p-9 flex flex-col justify-between relative overflow-hidden">
+          <div className="relative z-10 space-y-4 sm:space-y-6">
             {/* Gujarat Police Official Badge */}
             <div className="flex items-center space-x-3">
-              <PoliceLogo size={54} />
+              <PoliceLogo size={48} />
             </div>
 
             {/* Heading */}
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white leading-tight">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-white leading-tight">
                 Gujarat Police<br />
                 SENTINEL Platform
               </h1>
-              <p className="text-slate-300 text-xs sm:text-sm mt-3 leading-relaxed font-normal">
+              <p className="text-slate-300 text-xs sm:text-sm mt-2 sm:mt-3 leading-relaxed font-normal">
                 Sign in to access your dashboard, view live surveillance feeds, and manage field operations.
               </p>
             </div>
@@ -191,45 +191,45 @@ export default function LoginPage() {
             <div className="w-full h-px bg-white/15"></div>
 
             {/* Bullet Highlights */}
-            <div className="space-y-3.5 text-xs sm:text-sm text-slate-200">
-              <div className="flex items-center space-x-3">
-                <div className="w-5 h-5 rounded-full bg-sky-500 text-white flex items-center justify-center shrink-0 shadow">
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
+            <div className="grid grid-cols-1 sm:grid-cols-1 gap-2.5 sm:space-y-1 sm:gap-0 text-xs sm:text-sm text-slate-200">
+              <div className="flex items-center space-x-2.5 sm:space-x-3">
+                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-sky-500 text-white flex items-center justify-center shrink-0 shadow">
+                  <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 stroke-[3]" />
                 </div>
-                <span className="font-medium">OTP-verified secure login</span>
+                <span className="font-medium text-[11px] sm:text-xs">OTP-verified secure login</span>
               </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-5 h-5 rounded-full bg-sky-500 text-white flex items-center justify-center shrink-0 shadow">
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
+              <div className="flex items-center space-x-2.5 sm:space-x-3">
+                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-sky-500 text-white flex items-center justify-center shrink-0 shadow">
+                  <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 stroke-[3]" />
                 </div>
-                <span className="font-medium">Track application status in real-time</span>
+                <span className="font-medium text-[11px] sm:text-xs">Track application status in real-time</span>
               </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-5 h-5 rounded-full bg-sky-500 text-white flex items-center justify-center shrink-0 shadow">
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
+              <div className="flex items-center space-x-2.5 sm:space-x-3">
+                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-sky-500 text-white flex items-center justify-center shrink-0 shadow">
+                  <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 stroke-[3]" />
                 </div>
-                <span className="font-medium">Role-based SCRB encrypted access</span>
+                <span className="font-medium text-[11px] sm:text-xs">Role-based SCRB encrypted access</span>
               </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-5 h-5 rounded-full bg-sky-500 text-white flex items-center justify-center shrink-0 shadow">
-                  <ShieldCheck className="w-3.5 h-3.5 stroke-[3]" />
+              <div className="flex items-center space-x-2.5 sm:space-x-3">
+                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-sky-500 text-white flex items-center justify-center shrink-0 shadow">
+                  <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 stroke-[3]" />
                 </div>
-                <span className="font-medium">Real-time command feeds & dispatch</span>
+                <span className="font-medium text-[11px] sm:text-xs">Real-time command feeds & dispatch</span>
               </div>
             </div>
           </div>
 
           {/* Bottom Official Government Accreditation */}
-          <div className="mt-8 pt-5 border-t border-white/10 relative z-10 flex items-center space-x-2.5 text-xs text-slate-300">
+          <div className="mt-5 sm:mt-8 pt-4 sm:pt-5 border-t border-white/10 relative z-10 flex items-center space-x-2.5 text-xs text-slate-300">
             <Shield className="w-4 h-4 text-sky-400 shrink-0" />
-            <span className="text-[11px] text-slate-300 tracking-wide font-medium">
+            <span className="text-[10px] sm:text-[11px] text-slate-300 tracking-wide font-medium">
               Home Department • Government of Gujarat
             </span>
           </div>
         </div>
 
         {/* Right Column: Clean Login Form */}
-        <div className="md:col-span-7 bg-white dark:bg-slate-900 p-7 sm:p-9 flex flex-col justify-between">
+        <div className="md:col-span-7 bg-white dark:bg-slate-900 p-5 sm:p-7 md:p-9 flex flex-col justify-between">
           <div className="space-y-5">
             {/* Header Title */}
             <div>

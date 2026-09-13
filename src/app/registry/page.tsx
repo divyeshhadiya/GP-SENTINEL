@@ -137,10 +137,10 @@ export default function RegistryPage() {
           </p>
         </div>
 
-        <div className="flex items-center space-x-2.5">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setShowBulkModal(true)}
-            className="flex items-center space-x-1.5 px-3 py-2 bg-slate-100 dark:bg-police-800 hover:bg-slate-200 dark:hover:bg-police-700 text-slate-700 dark:text-slate-200 rounded-lg text-xs font-semibold border border-slate-300 dark:border-police-700 transition-all"
+            className="flex items-center justify-center space-x-1.5 px-3 py-2 bg-slate-100 dark:bg-police-800 hover:bg-slate-200 dark:hover:bg-police-700 text-slate-700 dark:text-slate-200 rounded-lg text-xs font-semibold border border-slate-300 dark:border-police-700 transition-all min-h-[38px] flex-1 sm:flex-initial"
           >
             <Upload className="w-3.5 h-3.5 text-blue-500" />
             <span>Bulk Import CSV/API</span>
@@ -148,7 +148,7 @@ export default function RegistryPage() {
 
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center space-x-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-all shadow-md"
+            className="flex items-center justify-center space-x-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-all shadow-md min-h-[38px] flex-1 sm:flex-initial"
           >
             <Plus className="w-4 h-4" />
             <span>Onboard Camera</span>
@@ -156,7 +156,7 @@ export default function RegistryPage() {
 
           <button
             onClick={handleExportCsv}
-            className="p-2 bg-slate-100 dark:bg-police-800 hover:bg-slate-200 dark:hover:bg-police-700 text-slate-600 dark:text-slate-300 rounded-lg text-xs border border-slate-300 dark:border-police-700"
+            className="p-2 bg-slate-100 dark:bg-police-800 hover:bg-slate-200 dark:hover:bg-police-700 text-slate-600 dark:text-slate-300 rounded-lg text-xs border border-slate-300 dark:border-police-700 min-h-[38px] min-w-[38px] flex items-center justify-center"
             title="Export Registry CSV"
           >
             <Download className="w-4 h-4" />
@@ -176,22 +176,22 @@ export default function RegistryPage() {
 
       {/* Filter & Search Bar */}
       <div className="bg-white dark:bg-police-900 border border-slate-200 dark:border-police-800 rounded-xl p-3.5 shadow-xl flex flex-wrap items-center justify-between gap-3 transition-colors">
-        <div className="flex items-center space-x-2 flex-1 min-w-[240px]">
-          <Search className="w-4 h-4 text-slate-400" />
+        <div className="flex items-center space-x-2 w-full lg:flex-1 min-w-[240px]">
+          <Search className="w-4 h-4 text-slate-400 shrink-0" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by Camera ID, location, junction, district..."
-            className="bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 w-full focus:outline-none focus:border-blue-500"
+            className="bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg px-3 py-2 text-xs text-slate-900 dark:text-slate-200 w-full focus:outline-none focus:border-blue-500"
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 text-xs">
+        <div className="flex flex-wrap items-center gap-2 text-xs w-full lg:w-auto">
           <select
             value={filterDepartment}
             onChange={(e) => setFilterDepartment(e.target.value)}
-            className="bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 text-slate-700 dark:text-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-none"
+            className="bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 text-slate-700 dark:text-slate-300 rounded-lg px-2.5 py-2 focus:outline-none flex-1 sm:flex-initial min-w-[130px]"
           >
             <option value="ALL">All Departments ({departments.length})</option>
             {departments.map((d) => (
@@ -204,7 +204,7 @@ export default function RegistryPage() {
           <select
             value={filterDistrict}
             onChange={(e) => setFilterDistrict(e.target.value)}
-            className="bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 text-slate-700 dark:text-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-none"
+            className="bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 text-slate-700 dark:text-slate-300 rounded-lg px-2.5 py-2 focus:outline-none flex-1 sm:flex-initial min-w-[110px]"
           >
             <option value="ALL">All Districts ({districts.length})</option>
             {districts.map((d) => (
@@ -217,7 +217,7 @@ export default function RegistryPage() {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 text-slate-700 dark:text-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-none"
+            className="bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 text-slate-700 dark:text-slate-300 rounded-lg px-2.5 py-2 focus:outline-none flex-1 sm:flex-initial min-w-[100px]"
           >
             <option value="ALL">All Statuses</option>
             <option value="Online">Online</option>
@@ -229,7 +229,7 @@ export default function RegistryPage() {
 
       {/* Asset Inventory Table */}
       <div className="bg-white dark:bg-police-900 border border-slate-200 dark:border-police-800 rounded-xl overflow-hidden shadow-xl transition-colors">
-        <div className="px-4 py-2.5 bg-slate-50 dark:bg-police-850 border-b border-slate-200 dark:border-police-800 flex items-center justify-between text-xs">
+        <div className="px-4 py-2.5 bg-slate-50 dark:bg-police-850 border-b border-slate-200 dark:border-police-800 flex flex-wrap items-center justify-between gap-2 text-xs">
           <span className="font-bold text-slate-900 dark:text-slate-200">
             Registered CCTV Asset Inventory ({filteredCameras.length} Nodes)
           </span>
@@ -239,7 +239,7 @@ export default function RegistryPage() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+          <table className="w-full text-left text-xs text-slate-700 dark:text-slate-300 min-w-[750px]">
             <thead className="bg-slate-100 dark:bg-police-800/80 text-[11px] text-slate-600 dark:text-slate-400 uppercase font-mono border-b border-slate-200 dark:border-police-700">
               <tr>
                 <th className="p-3">Camera ID / Name</th>
@@ -320,8 +320,8 @@ export default function RegistryPage() {
 
       {/* Manual Camera Onboarding Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-police-900 border border-slate-200 dark:border-police-700 rounded-2xl max-w-xl w-full p-5 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-police-900 border border-slate-200 dark:border-police-700 rounded-2xl max-w-xl w-full p-4 sm:p-5 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-police-800 pb-2">
               <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center space-x-2">
                 <Plus className="w-4 h-4 text-blue-500" />
@@ -329,7 +329,7 @@ export default function RegistryPage() {
               </h3>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="text-slate-400 hover:text-slate-700 dark:hover:text-white"
+                className="text-slate-400 hover:text-slate-700 dark:hover:text-white p-1"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -344,17 +344,17 @@ export default function RegistryPage() {
                   value={newCam.name}
                   onChange={(e) => setNewCam({ ...newCam, name: e.target.value })}
                   placeholder="e.g. Somnath Coastal Highway Gate 3"
-                  className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2 text-slate-900 dark:text-white"
+                  className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2.5 text-slate-900 dark:text-white"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-slate-600 dark:text-slate-400 mb-1">Department</label>
                   <select
                     value={newCam.department}
                     onChange={(e) => setNewCam({ ...newCam, department: e.target.value as any })}
-                    className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2 text-slate-900 dark:text-white"
+                    className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2.5 text-slate-900 dark:text-white"
                   >
                     <option value="Gujarat Police">Gujarat Police</option>
                     <option value="GSRTC">GSRTC</option>
@@ -372,7 +372,7 @@ export default function RegistryPage() {
                     required
                     value={newCam.district}
                     onChange={(e) => setNewCam({ ...newCam, district: e.target.value })}
-                    className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2 text-slate-900 dark:text-white"
+                    className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2.5 text-slate-900 dark:text-white"
                   />
                 </div>
               </div>
@@ -385,17 +385,17 @@ export default function RegistryPage() {
                   value={newCam.locationName}
                   onChange={(e) => setNewCam({ ...newCam, locationName: e.target.value })}
                   placeholder="e.g. Ring Road Junction, Surat"
-                  className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2 text-slate-900 dark:text-white"
+                  className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2.5 text-slate-900 dark:text-white"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-slate-600 dark:text-slate-400 mb-1">Camera Type</label>
                   <select
                     value={newCam.cameraType}
                     onChange={(e) => setNewCam({ ...newCam, cameraType: e.target.value as any })}
-                    className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2 text-slate-900 dark:text-white"
+                    className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2.5 text-slate-900 dark:text-white"
                   >
                     <option value="ANPR">ANPR Camera</option>
                     <option value="PTZ Speed Dome">PTZ Speed Dome</option>
@@ -410,7 +410,7 @@ export default function RegistryPage() {
                   <select
                     value={newCam.vmsVendor}
                     onChange={(e) => setNewCam({ ...newCam, vmsVendor: e.target.value as any })}
-                    className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2 text-slate-900 dark:text-white"
+                    className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2.5 text-slate-900 dark:text-white"
                   >
                     <option value="Hikvision">Hikvision HikCentral</option>
                     <option value="Matrix">Matrix SATATYA</option>
@@ -422,14 +422,14 @@ export default function RegistryPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-slate-600 dark:text-slate-400 mb-1">RTSP Stream URL (TCP Transport)</label>
                   <input
                     type="text"
                     value={newCam.rtspUrl}
                     onChange={(e) => setNewCam({ ...newCam, rtspUrl: e.target.value })}
-                    className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2 text-slate-900 dark:text-white font-mono text-xs"
+                    className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2.5 text-slate-900 dark:text-white font-mono text-xs"
                   />
                 </div>
                 <div>
@@ -438,22 +438,22 @@ export default function RegistryPage() {
                     type="number"
                     value={newCam.storageDays}
                     onChange={(e) => setNewCam({ ...newCam, storageDays: Number(e.target.value) })}
-                    className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2 text-slate-900 dark:text-white font-mono"
+                    className="w-full bg-slate-50 dark:bg-police-800 border border-slate-300 dark:border-police-700 rounded-lg p-2.5 text-slate-900 dark:text-white font-mono"
                   />
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-200 dark:border-police-800 flex justify-end space-x-2">
+              <div className="pt-3 border-t border-slate-200 dark:border-police-800 flex flex-wrap justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 bg-slate-100 dark:bg-police-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-police-700"
+                  className="px-4 py-2 bg-slate-100 dark:bg-police-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-police-700 flex-1 sm:flex-initial"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-bold"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-bold flex-1 sm:flex-initial"
                 >
                   Confirm & Onboard Node
                 </button>
@@ -465,8 +465,8 @@ export default function RegistryPage() {
 
       {/* Bulk Import Modal */}
       {showBulkModal && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-police-900 border border-slate-200 dark:border-police-700 rounded-2xl max-w-lg w-full p-5 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-police-900 border border-slate-200 dark:border-police-700 rounded-2xl max-w-lg w-full p-4 sm:p-5 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-police-800 pb-2">
               <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center space-x-2">
                 <Upload className="w-4 h-4 text-blue-500" />

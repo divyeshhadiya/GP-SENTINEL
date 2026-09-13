@@ -634,24 +634,24 @@ export default function VideoDemoPage() {
         </div>
 
         {/* Action Downloads */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
           {/* 1-Click Screen Record & Download Button */}
           {isRecording ? (
             <button
               onClick={stopRecording}
-              className="flex items-center space-x-1.5 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-xs transition-all shadow-md animate-pulse cursor-pointer"
+              className="flex items-center justify-center space-x-1.5 px-3 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-xs transition-all shadow-md animate-pulse cursor-pointer flex-1 sm:flex-initial min-h-[36px]"
             >
               <div className="w-2.5 h-2.5 bg-white rounded-xs"></div>
-              <span>Stop &amp; Save Video (.webm)</span>
+              <span>Stop &amp; Save (.webm)</span>
             </button>
           ) : (
             <button
               onClick={startRecording}
-              className="flex items-center space-x-1.5 px-3 py-1.5 bg-red-600/90 hover:bg-red-600 text-white font-bold rounded-lg text-xs transition-all shadow-md cursor-pointer"
+              className="flex items-center justify-center space-x-1.5 px-3 py-2 bg-red-600/90 hover:bg-red-600 text-white font-bold rounded-lg text-xs transition-all shadow-md cursor-pointer flex-1 sm:flex-initial min-h-[36px]"
               title="Record the guided tour directly to a downloadable video file"
             >
               <div className="w-2.5 h-2.5 rounded-full bg-white animate-ping"></div>
-              <span>Record &amp; Download Video</span>
+              <span>Record Video</span>
             </button>
           )}
 
@@ -659,7 +659,7 @@ export default function VideoDemoPage() {
           <a
             href="/GP-SENTINEL_Official_Pitch_Deck.pptx"
             download="GP-SENTINEL_Official_Pitch_Deck.pptx"
-            className="flex items-center space-x-1.5 px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs transition-all shadow-md cursor-pointer"
+            className="flex items-center justify-center space-x-1.5 px-3 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs transition-all shadow-md cursor-pointer flex-1 sm:flex-initial min-h-[36px]"
             title="Download the official 16-slide presentation file (.pptx)"
           >
             <Download className="w-3.5 h-3.5" />
@@ -670,17 +670,17 @@ export default function VideoDemoPage() {
           <a
             href="/DETECTION_OUTPUT_REPORT.json"
             download="DETECTION_OUTPUT_REPORT.json"
-            className="flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition-all shadow-md cursor-pointer"
+            className="flex items-center justify-center space-x-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition-all shadow-md cursor-pointer flex-1 sm:flex-initial min-h-[36px]"
             title="Download the mandated official vehicle detection output report (.json)"
           >
             <Download className="w-3.5 h-3.5" />
-            <span>Output Report (.JSON)</span>
+            <span>Report (.JSON)</span>
           </a>
 
           {/* Link to Interactive Slide Deck */}
           <Link
             href="/presentation"
-            className="flex items-center space-x-1.5 px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-lg text-xs transition-all shadow-md"
+            className="flex items-center justify-center space-x-1.5 px-3 py-2 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-lg text-xs transition-all shadow-md flex-1 sm:flex-initial min-h-[36px]"
           >
             <FileText className="w-3.5 h-3.5" />
             <span>Open Slides</span>

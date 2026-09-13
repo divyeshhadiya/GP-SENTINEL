@@ -178,7 +178,7 @@ export default function AlertsPage() {
             </div>
 
             {/* Sighting Metadata */}
-            <div className="grid grid-cols-2 gap-3 text-xs bg-slate-50 dark:bg-police-850 p-3.5 rounded-xl border border-slate-200 dark:border-police-750">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 dark:bg-police-850 p-3.5 rounded-xl border border-slate-200 dark:border-police-750">
               <div>
                 <span className="text-slate-500 text-[10px] block">DETECTING CAMERA</span>
                 <span className="font-bold text-slate-900 dark:text-white block">{selectedAlert.cameraName}</span>
@@ -193,7 +193,7 @@ export default function AlertsPage() {
                 </span>
               </div>
 
-              <div className="col-span-2 pt-2 border-t border-slate-200 dark:border-police-700">
+              <div className="sm:col-span-2 pt-2 border-t border-slate-200 dark:border-police-700">
                 <span className="text-slate-500 text-[10px] block">INVESTIGATION INTELLIGENCE</span>
                 <p className="text-slate-700 dark:text-slate-300 mt-0.5">{selectedAlert.watchlistEntry.details}</p>
                 <div className="flex flex-wrap items-center gap-3 mt-1.5 font-mono text-[11px] text-slate-600 dark:text-slate-400">
@@ -212,9 +212,9 @@ export default function AlertsPage() {
 
             {/* Dispatched Patrol Unit Telemetry */}
             {selectedAlert.dispatchedUnit ? (
-              <div className="bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-500/60 p-3.5 rounded-xl flex items-center justify-between">
+              <div className="bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-500/60 p-3.5 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center space-x-3">
-                  <div className="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold shadow">
+                  <div className="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold shadow shrink-0">
                     <Car className="w-5 h-5" />
                   </div>
                   <div>
@@ -227,7 +227,7 @@ export default function AlertsPage() {
                   </div>
                 </div>
 
-                <div className="text-right">
+                <div className="text-left sm:text-right">
                   <span className="text-[10px] text-emerald-600 dark:text-emerald-400/80 font-mono block">ESTIMATED ARRIVAL</span>
                   <span className="text-sm font-black text-emerald-800 dark:text-emerald-300 font-mono">
                     {selectedAlert.dispatchedUnit.etaMinutes} Minutes ETA
@@ -235,7 +235,7 @@ export default function AlertsPage() {
                 </div>
               </div>
             ) : (
-              <div className="bg-slate-50 dark:bg-police-850 p-3.5 rounded-xl border border-slate-200 dark:border-police-750 flex items-center justify-between">
+              <div className="bg-slate-50 dark:bg-police-850 p-3.5 rounded-xl border border-slate-200 dark:border-police-750 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="text-xs text-slate-700 dark:text-slate-300">
                   <strong className="text-slate-900 dark:text-white block">Nearest Patrol Unit Available:</strong>
                   <span>Surat City Quick Response Team PCR-12 (Distance: 1.8 km)</span>
@@ -243,7 +243,7 @@ export default function AlertsPage() {
 
                 <button
                   onClick={() => handleUpdateStatus(selectedAlert.id, "DISPATCHED")}
-                  className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg text-xs font-bold transition-all shadow-[0_0_15px_rgba(239,68,68,0.4)] flex items-center space-x-1.5"
+                  className="px-4 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-lg text-xs font-bold transition-all shadow-[0_0_15px_rgba(239,68,68,0.4)] flex items-center justify-center space-x-1.5 w-full sm:w-auto"
                 >
                   <Radio className="w-3.5 h-3.5" />
                   <span>Dispatch PCR Unit</span>
@@ -252,25 +252,25 @@ export default function AlertsPage() {
             )}
 
             {/* Command Actions Bar */}
-            <div className="pt-3 border-t border-slate-200 dark:border-police-800 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center space-x-2">
+            <div className="pt-3 border-t border-slate-200 dark:border-police-800 flex flex-wrap items-center justify-between gap-2.5">
+              <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
                 <button
                   onClick={() => handleUpdateStatus(selectedAlert.id, "ACKNOWLEDGED")}
-                  className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-police-800 hover:bg-slate-200 dark:hover:bg-police-750 text-slate-800 dark:text-slate-300 text-xs font-mono border border-slate-200 dark:border-police-700 transition-colors"
+                  className="px-3 py-2 rounded-lg bg-slate-100 dark:bg-police-800 hover:bg-slate-200 dark:hover:bg-police-750 text-slate-800 dark:text-slate-300 text-xs font-mono border border-slate-200 dark:border-police-700 transition-colors flex-1 sm:flex-initial text-center"
                 >
                   Acknowledge Incident
                 </button>
                 <button
                   onClick={() => handleUpdateStatus(selectedAlert.id, "RESOLVED")}
-                  className="px-3 py-1.5 rounded-lg bg-emerald-600 dark:bg-emerald-700/80 hover:bg-emerald-500 text-white text-xs font-mono font-bold transition-colors"
+                  className="px-3 py-2 rounded-lg bg-emerald-600 dark:bg-emerald-700/80 hover:bg-emerald-500 text-white text-xs font-mono font-bold transition-colors flex-1 sm:flex-initial text-center"
                 >
-                  Mark Apprehended / Resolved
+                  Mark Resolved
                 </button>
               </div>
 
               <button
                 onClick={() => handleUpdateStatus(selectedAlert.id, "FALSE_POSITIVE")}
-                className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300 text-xs font-mono border border-slate-200 dark:border-slate-700 transition-colors"
+                className="px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300 text-xs font-mono border border-slate-200 dark:border-slate-700 transition-colors w-full sm:w-auto text-center"
               >
                 False Positive
               </button>

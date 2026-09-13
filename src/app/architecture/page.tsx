@@ -27,34 +27,34 @@ export default function ArchitecturePage() {
         </div>
 
         {/* View Switcher Tabs */}
-        <div className="flex items-center space-x-2 bg-slate-100 dark:bg-police-850 p-1 rounded-xl border border-slate-200 dark:border-police-800 text-xs">
+        <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 dark:bg-police-850 p-1.5 rounded-xl border border-slate-200 dark:border-police-800 text-xs w-full sm:w-auto">
           <button
             onClick={() => setActiveTab("SIZING")}
-            className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center space-x-1.5 ${
+            className={`px-3 py-2 rounded-lg font-bold transition-all flex items-center justify-center space-x-1.5 flex-1 sm:flex-initial min-h-[36px] ${
               activeTab === "SIZING"
                 ? "bg-blue-600 text-white shadow-md"
                 : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
             <Cpu className="w-3.5 h-3.5" />
-            <span>80k Sizing Calculator</span>
+            <span>80k Sizing</span>
           </button>
 
           <button
             onClick={() => setActiveTab("PRESENTATION")}
-            className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center space-x-1.5 ${
+            className={`px-3 py-2 rounded-lg font-bold transition-all flex items-center justify-center space-x-1.5 flex-1 sm:flex-initial min-h-[36px] ${
               activeTab === "PRESENTATION"
                 ? "bg-blue-600 text-white shadow-md"
                 : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
             <Presentation className="w-3.5 h-3.5" />
-            <span>Solution Presentation Deck</span>
+            <span>Presentation</span>
           </button>
 
           <button
             onClick={() => setActiveTab("HLD")}
-            className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center space-x-1.5 ${
+            className={`px-3 py-2 rounded-lg font-bold transition-all flex items-center justify-center space-x-1.5 flex-1 sm:flex-initial min-h-[36px] ${
               activeTab === "HLD"
                 ? "bg-blue-600 text-white shadow-md"
                 : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"

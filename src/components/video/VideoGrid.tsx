@@ -28,15 +28,15 @@ export default function VideoGrid({ cameras, targetPlate = "GJ-01-AB-1234" }: Pr
   const gridClasses = {
     "1x1": "grid-cols-1",
     "2x2": "grid-cols-1 md:grid-cols-2",
-    "3x3": "grid-cols-1 md:grid-cols-3",
-    "4x4": "grid-cols-2 md:grid-cols-4"
+    "3x3": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+    "4x4": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
   }[layout];
 
   const playerHeight = {
     "1x1": "520px",
     "2x2": "320px",
     "3x3": "240px",
-    "4x4": "190px"
+    "4x4": "200px"
   }[layout];
 
   // Active camera assignments for each cell
@@ -70,16 +70,16 @@ export default function VideoGrid({ cameras, targetPlate = "GJ-01-AB-1234" }: Pr
       {/* Tactical Toolbar */}
       <div className="bg-police-900/90 border border-police-700/80 rounded-xl p-3 flex flex-wrap items-center justify-between gap-3 shadow-lg">
         {/* Layout Selectors */}
-        <div className="flex items-center space-x-1.5">
-          <span className="text-xs font-mono text-slate-400 mr-2 flex items-center space-x-1">
+        <div className="flex flex-wrap items-center gap-1.5">
+          <span className="text-xs font-mono text-slate-400 mr-1 flex items-center space-x-1">
             <Grid className="w-3.5 h-3.5 text-blue-400" />
-            <span>Grid Layout:</span>
+            <span>Grid:</span>
           </span>
           {(["1x1", "2x2", "3x3", "4x4"] as GridLayout[]).map((g) => (
             <button
               key={g}
               onClick={() => setLayout(g)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all ${
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-all min-h-[32px] min-w-[38px] ${
                 layout === g
                   ? "bg-blue-600 text-white shadow-[0_0_10px_rgba(37,99,235,0.4)]"
                   : "bg-police-800 text-slate-400 hover:text-white hover:bg-police-750"
@@ -91,12 +91,12 @@ export default function VideoGrid({ cameras, targetPlate = "GJ-01-AB-1234" }: Pr
         </div>
 
         {/* Department Filter */}
-        <div className="flex items-center space-x-2">
-          <Layers className="w-3.5 h-3.5 text-slate-400" />
+        <div className="flex items-center space-x-2 w-full sm:w-auto">
+          <Layers className="w-3.5 h-3.5 text-slate-400 shrink-0" />
           <select
             value={selectedDept}
             onChange={(e) => setSelectedDept(e.target.value)}
-            className="bg-police-800 border border-police-700 text-slate-200 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-blue-500"
+            className="bg-police-800 border border-police-700 text-slate-200 text-xs rounded-lg px-2.5 py-2 focus:outline-none focus:border-blue-500 w-full sm:w-auto"
           >
             <option value="ALL">All Departments (26 Govt Agencies)</option>
             <option value="Gujarat Police">Gujarat Police</option>
@@ -113,23 +113,23 @@ export default function VideoGrid({ cameras, targetPlate = "GJ-01-AB-1234" }: Pr
         </div>
 
         {/* Toggles */}
-        <div className="flex items-center space-x-3 text-xs font-medium text-slate-300">
-          <label className="flex items-center space-x-1.5 cursor-pointer">
+        <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-slate-300">
+          <label className="flex items-center space-x-1.5 cursor-pointer py-1">
             <input
               type="checkbox"
               checked={showAiOverlays}
               onChange={(e) => setShowAiOverlays(e.target.checked)}
-              className="accent-blue-500 rounded"
+              className="accent-blue-500 rounded w-4 h-4"
             />
-            <span>AI YOLO/ANPR Boxes</span>
+            <span>AI YOLO/ANPR</span>
           </label>
 
-          <label className="flex items-center space-x-1.5 cursor-pointer">
+          <label className="flex items-center space-x-1.5 cursor-pointer py-1">
             <input
               type="checkbox"
               checked={showOsd}
               onChange={(e) => setShowOsd(e.target.checked)}
-              className="accent-blue-500 rounded"
+              className="accent-blue-500 rounded w-4 h-4"
             />
             <span>PTS OSD</span>
           </label>
