@@ -1,11 +1,13 @@
 # GP-SENTINEL - Gujarat Unified Video Intelligence & Multi-Department Command Platform
 
 [![Vercel Live Deployment](https://img.shields.io/badge/Vercel-Live_Demo_Platform-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://gp-sentinel.vercel.app)
-[![API Documentation](https://img.shields.io/badge/FastAPI-Interactive_Swagger_Docs-009688?style=for-the-badge&logo=fastapi&logoColor=white)](http://127.0.0.1:8000/docs)
+[![API Documentation](https://img.shields.io/badge/Swagger-Interactive_API_Docs-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)](https://gp-sentinel.vercel.app/docs)
 [![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/divyeshhadiya/GP-SENTINEL)
 [![Government of Gujarat](https://img.shields.io/badge/Gujarat_Police-Official_Evaluation-1e3a8a?style=for-the-badge&logo=shield)](https://sentinel.gujarat.gov.in/)
 
 > 🌐 **Live Vercel Application**: [https://gp-sentinel.vercel.app](https://gp-sentinel.vercel.app)  
+> 📖 **Live Swagger API Documentation**: [https://gp-sentinel.vercel.app/docs](https://gp-sentinel.vercel.app/docs)  
+> 📄 **OpenAPI Specification**: [https://gp-sentinel.vercel.app/openapi.json](https://gp-sentinel.vercel.app/openapi.json)  
 > 🎬 **Complete Video Walkthrough**: [Download MP4 (1080p, 30fps)](./public/assets/GP-SENTINEL_Complete_Project_Walkthrough_Video.mp4)  
 > 📊 **Official Challenge Pitch Deck**: [Download PPTX (16 Slides)](./public/assets/GP-SENTINEL_Complete_Project_Presentation.pptx)  
 
@@ -41,9 +43,9 @@ A comprehensive, enterprise-grade unified surveillance and real-time intelligenc
 
 | Layer | Technology | Description |
 | :--- | :--- | :--- |
-| **Frontend Framework** | React 18 / Next.js 14 (App Router) | High-performance server and client component hybrid rendering |
-| **Backend API Gateway** | Python 3.12 + FastAPI + Uvicorn | High-throughput asynchronous REST gateway with auto OpenAPI 3.1 Swagger docs |
-| **Database & Persistence** | PostgreSQL 16 + Async SQLAlchemy 2.0 (Dual SQLite fallback) | ACID relational storage for cameras, sightings, alerts, and audit logs |
+| **Full-Stack Application** | Next.js 14 (App Router) + React 18 | High-performance unified application with server and client components |
+| **REST API Gateway** | Next.js Edge & Serverless Route Handlers | Integrated native REST APIs with zero cold-start latency |
+| **API Documentation** | OpenAPI 3.0 + Swagger UI | Interactive in-browser testing console at `/docs` |
 | **Styling & UI Design** | Tailwind CSS + Lucide React | Modern dark/light theme responsive command console with tactical styling |
 | **Cartography & GIS** | Leaflet.js + ESRI World Imagery | Interactive GIS mapping with Default (Roads), Satellite, and Night Grid views |
 | **State Management** | React Context API | Global authentication, theme mode, active stream matrix, and audio alert state |
