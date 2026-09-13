@@ -36,3 +36,5 @@ next-env.d.ts
 
 .tmp_edge
 .tmp_chrome
+.vercel
+.env*

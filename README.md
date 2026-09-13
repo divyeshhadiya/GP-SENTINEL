@@ -1,11 +1,11 @@
 # GP-SENTINEL - Gujarat Unified Video Intelligence & Multi-Department Command Platform
 
-[![Vercel Live Deployment](https://img.shields.io/badge/Vercel-Live_Demo_Platform-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://sentinel-gujarat.vercel.app)
+[![Vercel Live Deployment](https://img.shields.io/badge/Vercel-Live_Demo_Platform-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://gp-sentinel.vercel.app)
 [![API Documentation](https://img.shields.io/badge/FastAPI-Interactive_Swagger_Docs-009688?style=for-the-badge&logo=fastapi&logoColor=white)](http://127.0.0.1:8000/docs)
 [![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/divyeshhadiya/GP-SENTINEL)
 [![Government of Gujarat](https://img.shields.io/badge/Gujarat_Police-Official_Evaluation-1e3a8a?style=for-the-badge&logo=shield)](https://sentinel.gujarat.gov.in/)
 
-> 🌐 **Live Vercel Application**: [https://sentinel-gujarat.vercel.app](https://sentinel-gujarat.vercel.app)  
+> 🌐 **Live Vercel Application**: [https://gp-sentinel.vercel.app](https://gp-sentinel.vercel.app)  
 > 🎬 **Complete Video Walkthrough**: [Download MP4 (1080p, 30fps)](./public/assets/GP-SENTINEL_Complete_Project_Walkthrough_Video.mp4)  
 > 📊 **Official Challenge Pitch Deck**: [Download PPTX (16 Slides)](./public/assets/GP-SENTINEL_Complete_Project_Presentation.pptx)  
 
