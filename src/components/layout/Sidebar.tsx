@@ -18,7 +18,8 @@ import {
   LogOut,
   ShieldCheck,
   Presentation,
-  Film
+  Film,
+  Code2
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
@@ -104,6 +105,13 @@ const navItems: NavItem[] = [
     href: "/sandbox",
     icon: Terminal,
     tag: "§1 - §4"
+  },
+  {
+    name: "Swagger API Docs",
+    href: "/docs",
+    icon: Code2,
+    tag: "OpenAPI",
+    modelBadge: "Swagger"
   },
   {
     name: "Officer Login Portal",
